@@ -35,7 +35,8 @@ export default function App() {
 
   return <>
     <RetroNav onOpenTerminal={() => setTerminalOpen(true)} />
-    <main><BootScreen onOpenTerminal={() => setTerminalOpen(true)} />
+    <main>
+      <BootScreen onOpenTerminal={() => setTerminalOpen(true)} />
       <div className="system-strip"><div className="wrap system-grid"><div className="system-cell"><span>primary_language</span><b>Python</b></div><div className="system-cell"><span>current_location</span><b>Singapore / NUS</b></div><div className="system-cell"><span>available_for</span><b>Sep 2026 intern</b></div><div className="system-cell"><span>github</span><b><a href="https://github.com/kellywsq03" target="_blank" rel="noreferrer">kellywsq03 ↗</a></b></div></div></div>
       <ProjectDeck openProject={openProject} onToggle={toggleProject} />
       <SystemLog />
