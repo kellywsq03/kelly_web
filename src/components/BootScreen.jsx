@@ -95,16 +95,16 @@ function SkillPills({ active, sorted, onSort }) {
           const deltaX = centerX - pointer.x;
           const deltaY = centerY - pointer.y;
           const distance = Math.hypot(deltaX, deltaY);
-          if (distance < 130) {
-            const force = (130 - distance) / 130 * 1.25;
+          if (distance < 185) {
+            const force = (185 - distance) / 185 * 4.2;
             particle.vx += deltaX / Math.max(distance, 1) * force;
             particle.vy += deltaY / Math.max(distance, 1) * force;
           }
         }
 
-        particle.vy += .2;
-        particle.vx *= .98;
-        particle.vy *= .985;
+        particle.vy += .075;
+        particle.vx *= .992;
+        particle.vy *= .994;
         particle.x += particle.vx;
         particle.y += particle.vy;
 
@@ -160,7 +160,7 @@ function SkillPills({ active, sorted, onSort }) {
   }, [active, sorted]);
 
   return <>
-    <button className="skill-sort-button" type="button" onClick={onSort}>{sorted ? 'enable gravity // scatter pills' : 'sort pills // disable gravity'}</button>
+    <button className="skill-sort-button" type="button" onClick={onSort}>{sorted ? 'scatter pills' : 'sort pills'}</button>
     <div className={`skill-pills ${sorted ? 'is-sorted' : ''}`} ref={arenaRef}>
       {skillMatrix.map(([skill, category], index) => <span className={`skill-pill is-${category}`} ref={(node) => { pillRefs.current[index] = node; }} key={skill}>{skill}</span>)}
     </div>
@@ -272,7 +272,7 @@ export default function BootScreen({ onOpenTerminal }) {
         >
           <div className="window-bar"><span>skill_matrix.json</span><span className="window-lights" aria-hidden="true"><i /><i /><i /></span></div>
           <div className="skills-body">
-            <div className="skills-title"><span>21 loaded skills</span><span>cursor field: active</span></div>
+            <div className="skills-title"><span>Hover to repel pills</span><span>cursor field: active</span></div>
             <SkillPills active={openWindow === 'skills'} sorted={skillsSorted} onSort={(event) => { event.stopPropagation(); setSkillsSorted((sorted) => !sorted); }} />
           </div>
         </article>

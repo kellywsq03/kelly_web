@@ -13,6 +13,23 @@
   font: 10px var(--mono);
   letter-spacing: .08em;
   text-transform: uppercase;
+  overflow: hidden;
+  width: 0;
+  border-right: 1px solid var(--green);
+  white-space: nowrap;
+  animation: type-folder-hint 5.6s steps(25) infinite, blink-folder-caret .75s steps(2) infinite;
+}
+
+@keyframes type-folder-hint {
+  0%, 12% { width: 0; }
+
+  50%, 76% { width: 25ch; }
+
+  100% { width: 0; }
+}
+
+@keyframes blink-folder-caret {
+  50% { border-color: transparent; }
 }
 
 .desktop-folder {
