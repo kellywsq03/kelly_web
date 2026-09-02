@@ -22,7 +22,7 @@ export default function App() {
     const onKeyDown = (event) => {
       if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') { event.preventDefault(); setTerminalOpen(true); }
       if (event.key === 'Escape') setTerminalOpen(false);
-      if (event.key === 'Enter' && event.target === document.body) document.querySelector('#work')?.scrollIntoView({ behavior: 'smooth' });
+      if (event.key === 'Enter' && event.target === document.body) document.querySelector('#projects')?.scrollIntoView({ behavior: 'smooth' });
     };
     document.addEventListener('keydown', onKeyDown);
     return () => document.removeEventListener('keydown', onKeyDown);
@@ -37,7 +37,6 @@ export default function App() {
     <RetroNav onOpenTerminal={() => setTerminalOpen(true)} />
     <main>
       <BootScreen onOpenTerminal={() => setTerminalOpen(true)} />
-      <div className="system-strip"><div className="wrap system-grid"><div className="system-cell"><span>primary_language</span><b>Python</b></div><div className="system-cell"><span>current_location</span><b>Singapore / NUS</b></div><div className="system-cell"><span>available_for</span><b>Sep 2026 intern</b></div><div className="system-cell"><span>github</span><b><a href="https://github.com/kellywsq03" target="_blank" rel="noreferrer">kellywsq03 ↗</a></b></div></div></div>
       <ProjectDeck openProject={openProject} onToggle={toggleProject} />
       <SystemLog />
       <section className="wrap" id="writing"><div className="section-head"><div><div className="section-kicker">writing // build logs</div><h2>thoughts.md</h2></div><p className="section-intro">Short notes about the engineering decisions, debugging stories, and small details that do not fit inside a project bullet point.</p></div><div className="writing-grid">{posts.map(([date, title, meta]) => <a className="post" href="#contact" key={title}><span className="post-date">{date}</span><h3>{title}</h3><span className="post-meta">{meta}</span></a>)}</div></section>
