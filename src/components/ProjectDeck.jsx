@@ -3,7 +3,7 @@ import { projects } from '../data/portfolio';
 
 export default function ProjectDeck({ openProject, onToggle }) {
   return (
-    <section className="wrap" id="work">
+    <section className="wrap" id="projects">
       <div className="section-head"><div><div className="section-kicker">projects // click a process</div><h2>work.exe</h2></div><p className="section-intro">A deliberately non-uniform project stack. Click any card to expand the technical story; the deck gives your eye a sense of discovery before asking for details.</p></div>
       <div className={`projects-deck ${openProject ? 'has-open' : ''}`}>
         {projects.map((project) => (

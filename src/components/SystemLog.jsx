@@ -10,7 +10,7 @@ const entries = [
 
 export default function SystemLog() {
   return (
-    <section className="wrap" id="system">
+    <section className="wrap" id="experience">
       <div className="section-head"><div><div className="section-kicker">system // person.log</div><h2>about.sys</h2></div><p className="section-intro">The resume facts are still there, but presented as a living system: education, work, leadership, and the tools I reach for most.</p></div>
       <div className="split-grid">
         <article className="retro-panel profile-panel"><div className="panel-head"><span>person.log</span><span>status: curious</span></div><div className="panel-body"><h3>curiosity is a feature.</h3><p>I like going deep enough into a problem to understand what the computer is actually doing — then making the result easier for someone else to use.</p><div className="project-meta"><span className="tag">systems thinker</span><span className="tag">kind teammate</span><span className="tag">python enjoyer</span></div></div></article>
