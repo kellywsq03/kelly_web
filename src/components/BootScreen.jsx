@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { skills } from '../data/portfolio';
 import '../styles/BootScreen.css';
 
 const portrait = `
@@ -40,11 +41,114 @@ const bootLines = [
   ['loading experience.... [ok]'],
 ];
 
+const skillCategories = {
+  Python: 'language', TypeScript: 'language', Java: 'language', Go: 'language', Swift: 'language',
+  React: 'framework', Django: 'framework', FastAPI: 'framework', Flask: 'framework',
+  PostgreSQL: 'data', MongoDB: 'data', Redis: 'data',
+  Docker: 'cicd', Kubernetes: 'cicd', Jenkins: 'cicd',
+  LangGraph: 'ai', PyTorch: 'ai', OpenAI: 'ai',
+  'Apache Kafka': 'systems', Microservices: 'systems', 'Event-driven architecture': 'systems',
+};
+
+const skillMatrix = [['Python', 'language'], ...skills.map(([skill]) => [skill, skillCategories[skill] ?? 'systems'])];
+
+function SkillPills({ active, sorted, onSort }) {
+  const arenaRef = useRef(null);
+  const pillRefs = useRef([]);
+
+  useEffect(() => {
+    if (!active || sorted || !arenaRef.current) return undefined;
+    const arena = arenaRef.current;
+    let pointer = null;
+    let frame;
+    let particles = [];
+
+    const placeParticles = () => {
+      const { width, height } = arena.getBoundingClientRect();
+      particles = pillRefs.current.map((pill, index) => {
+        const pillWidth = pill.offsetWidth;
+        const pillHeight = pill.offsetHeight;
+        return {
+          x: ((index * 71) % Math.max(1, width - pillWidth)),
+          y: ((index * 43) % Math.max(1, height * .55 - pillHeight)),
+          vx: 0,
+          vy: 0,
+        };
+      });
+    };
+
+    const move = (event) => {
+      const bounds = arena.getBoundingClientRect();
+      pointer = { x: event.clientX - bounds.left, y: event.clientY - bounds.top };
+    };
+    const clearPointer = () => { pointer = null; };
+
+    const step = () => {
+      const { width, height } = arena.getBoundingClientRect();
+      particles.forEach((particle, index) => {
+        const pill = pillRefs.current[index];
+        const pillWidth = pill.offsetWidth;
+        const pillHeight = pill.offsetHeight;
+        const centerX = particle.x + pillWidth / 2;
+        const centerY = particle.y + pillHeight / 2;
+
+        if (pointer) {
+          const deltaX = centerX - pointer.x;
+          const deltaY = centerY - pointer.y;
+          const distance = Math.hypot(deltaX, deltaY);
+          if (distance < 130) {
+            const force = (130 - distance) / 130 * 1.25;
+            particle.vx += deltaX / Math.max(distance, 1) * force;
+            particle.vy += deltaY / Math.max(distance, 1) * force;
+          }
+        }
+
+        particle.vy += .2;
+        particle.vx *= .98;
+        particle.vy *= .985;
+        particle.x += particle.vx;
+        particle.y += particle.vy;
+
+        const maxX = Math.max(0, width - pillWidth);
+        const maxY = Math.max(0, height - pillHeight);
+        if (particle.x < 0 || particle.x > maxX) {
+          particle.x = Math.max(0, Math.min(maxX, particle.x));
+          particle.vx *= -.45;
+        }
+        if (particle.y < 0 || particle.y > maxY) {
+          particle.y = Math.max(0, Math.min(maxY, particle.y));
+          particle.vy *= -.32;
+        }
+        pill.style.transform = `translate3d(${particle.x}px, ${particle.y}px, 0)`;
+      });
+      frame = window.requestAnimationFrame(step);
+    };
+
+    placeParticles();
+    arena.addEventListener('pointermove', move);
+    arena.addEventListener('pointerleave', clearPointer);
+    frame = window.requestAnimationFrame(step);
+    return () => {
+      window.cancelAnimationFrame(frame);
+      arena.removeEventListener('pointermove', move);
+      arena.removeEventListener('pointerleave', clearPointer);
+    };
+  }, [active, sorted]);
+
+  return <>
+    <button className="skill-sort-button" type="button" onClick={onSort}>{sorted ? 'gravity disabled // sorted' : 'sort pills // disable gravity'}</button>
+    <div className={`skill-pills ${sorted ? 'is-sorted' : ''}`} ref={arenaRef}>
+      {skillMatrix.map(([skill, category], index) => <span className={`skill-pill is-${category}`} ref={(node) => { pillRefs.current[index] = node; }} key={skill}>{skill}</span>)}
+    </div>
+  </>;
+}
+
 export default function BootScreen({ onOpenTerminal }) {
   const [visibleLineCount, setVisibleLineCount] = useState(0);
   const [isReady, setIsReady] = useState(false);
   const [openWindow, setOpenWindow] = useState(null);
   const [bootRun, setBootRun] = useState(0);
+  const [skillsSorted, setSkillsSorted] = useState(false);
 
   useEffect(() => {
     setVisibleLineCount(0);
@@ -75,8 +179,13 @@ export default function BootScreen({ onOpenTerminal }) {
     if (openWindow === 'boot') setBootRun((run) => run + 1);
   }, [openWindow]);
 
+  useEffect(() => {
+    if (openWindow === 'skills') setSkillsSorted(false);
+  }, [openWindow]);
+
   const toggleWindow = (windowName) => setOpenWindow((current) => current === windowName ? null : windowName);
   const onCardKeyDown = (event, windowName) => {
+    if (event.target !== event.currentTarget) return;
     if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault();
       toggleWindow(windowName);
@@ -124,6 +233,19 @@ export default function BootScreen({ onOpenTerminal }) {
             <div className="hero-actions">
               <button className="button dark" type="button" onClick={(event) => { event.stopPropagation(); onOpenTerminal(); }}>open shell<span>⌘K</span></button>
             </div>
+          </div>
+        </article>
+        <article
+          className={`skills-window folder-window ${openWindow === 'skills' ? 'is-open' : ''}`}
+          aria-label="Skill matrix"
+          tabIndex="0"
+          onClick={(event) => { event.stopPropagation(); toggleWindow('skills'); }}
+          onKeyDown={(event) => onCardKeyDown(event, 'skills')}
+        >
+          <div className="window-bar"><span>skill_matrix.json</span><span className="window-lights" aria-hidden="true"><i /><i /><i /></span></div>
+          <div className="skills-body">
+            <div className="skills-title"><span>21 loaded skills</span><span>cursor field: active</span></div>
+            <SkillPills active={openWindow === 'skills'} sorted={skillsSorted} onSort={(event) => { event.stopPropagation(); setSkillsSorted(true); }} />
           </div>
         </article>
       </div>
