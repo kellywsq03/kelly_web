@@ -71,6 +71,8 @@ function SkillPills({ active, sorted, onSort }) {
         return {
           x: ((index * 71) % Math.max(1, width - pillWidth)),
           y: ((index * 43) % Math.max(1, height * .55 - pillHeight)),
+          width: pillWidth,
+          height: pillHeight,
           vx: 0,
           vy: 0,
         };
@@ -85,12 +87,9 @@ function SkillPills({ active, sorted, onSort }) {
 
     const step = () => {
       const { width, height } = arena.getBoundingClientRect();
-      particles.forEach((particle, index) => {
-        const pill = pillRefs.current[index];
-        const pillWidth = pill.offsetWidth;
-        const pillHeight = pill.offsetHeight;
-        const centerX = particle.x + pillWidth / 2;
-        const centerY = particle.y + pillHeight / 2;
+      particles.forEach((particle) => {
+        const centerX = particle.x + particle.width / 2;
+        const centerY = particle.y + particle.height / 2;
 
         if (pointer) {
           const deltaX = centerX - pointer.x;
@@ -109,8 +108,33 @@ function SkillPills({ active, sorted, onSort }) {
         particle.x += particle.vx;
         particle.y += particle.vy;
 
-        const maxX = Math.max(0, width - pillWidth);
-        const maxY = Math.max(0, height - pillHeight);
+      });
+
+      particles.forEach((particle, index) => {
+        particles.slice(index + 1).forEach((other) => {
+          const overlapX = Math.min(particle.x + particle.width, other.x + other.width) - Math.max(particle.x, other.x);
+          const overlapY = Math.min(particle.y + particle.height, other.y + other.height) - Math.max(particle.y, other.y);
+          if (overlapX <= 0 || overlapY <= 0) return;
+
+          if (overlapX < overlapY) {
+            const direction = particle.x + particle.width / 2 < other.x + other.width / 2 ? -1 : 1;
+            const separation = overlapX / 2 + .5;
+            particle.x += direction * separation;
+            other.x -= direction * separation;
+            [particle.vx, other.vx] = [other.vx * .45, particle.vx * .45];
+          } else {
+            const direction = particle.y + particle.height / 2 < other.y + other.height / 2 ? -1 : 1;
+            const separation = overlapY / 2 + .5;
+            particle.y += direction * separation;
+            other.y -= direction * separation;
+            [particle.vy, other.vy] = [other.vy * .35, particle.vy * .35];
+          }
+        });
+      });
+
+      particles.forEach((particle, index) => {
+        const maxX = Math.max(0, width - particle.width);
+        const maxY = Math.max(0, height - particle.height);
         if (particle.x < 0 || particle.x > maxX) {
           particle.x = Math.max(0, Math.min(maxX, particle.x));
           particle.vx *= -.45;
@@ -119,7 +143,7 @@ function SkillPills({ active, sorted, onSort }) {
           particle.y = Math.max(0, Math.min(maxY, particle.y));
           particle.vy *= -.32;
         }
-        pill.style.transform = `translate3d(${particle.x}px, ${particle.y}px, 0)`;
+        pillRefs.current[index].style.transform = `translate3d(${particle.x}px, ${particle.y}px, 0)`;
       });
       frame = window.requestAnimationFrame(step);
     };
@@ -136,7 +160,7 @@ function SkillPills({ active, sorted, onSort }) {
   }, [active, sorted]);
 
   return <>
-    <button className="skill-sort-button" type="button" onClick={onSort}>{sorted ? 'gravity disabled // sorted' : 'sort pills // disable gravity'}</button>
+    <button className="skill-sort-button" type="button" onClick={onSort}>{sorted ? 'enable gravity // scatter pills' : 'sort pills // disable gravity'}</button>
     <div className={`skill-pills ${sorted ? 'is-sorted' : ''}`} ref={arenaRef}>
       {skillMatrix.map(([skill, category], index) => <span className={`skill-pill is-${category}`} ref={(node) => { pillRefs.current[index] = node; }} key={skill}>{skill}</span>)}
     </div>
@@ -195,7 +219,11 @@ export default function BootScreen({ onOpenTerminal }) {
   return (
     <section className={`wrap hero ${openWindow ? 'has-open-window' : ''}`} id="top">
       <p className="folder-hint">open a file to explore_</p>
-      <div className={`desktop-folder ${openWindow ? 'is-docked' : ''}`} aria-label="Welcome folder">
+      <div
+        className={`desktop-folder ${openWindow ? 'is-docked' : ''}`}
+        aria-label="Welcome folder"
+        onClick={() => { if (openWindow) setOpenWindow(null); }}
+      >
         <div className="folder-tab">kelly.dev</div>
         <div className="folder-face" aria-hidden="true" />
         <article
@@ -245,7 +273,7 @@ export default function BootScreen({ onOpenTerminal }) {
           <div className="window-bar"><span>skill_matrix.json</span><span className="window-lights" aria-hidden="true"><i /><i /><i /></span></div>
           <div className="skills-body">
             <div className="skills-title"><span>21 loaded skills</span><span>cursor field: active</span></div>
-            <SkillPills active={openWindow === 'skills'} sorted={skillsSorted} onSort={(event) => { event.stopPropagation(); setSkillsSorted(true); }} />
+            <SkillPills active={openWindow === 'skills'} sorted={skillsSorted} onSort={(event) => { event.stopPropagation(); setSkillsSorted((sorted) => !sorted); }} />
           </div>
         </article>
       </div>

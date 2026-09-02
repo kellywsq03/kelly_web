@@ -125,10 +125,11 @@
 }
 
 .skills-window {
-  top: 36px;
+  z-index: 1;
+  top: -104px;
   left: 184px;
   width: 500px;
-  min-height: 430px;
+  min-height: 590px;
   padding: 20px 24px 24px;
   border: var(--border);
   border-radius: 22px;
@@ -486,7 +487,7 @@
 
 .intro-window.is-open { min-height: 390px; }
 
-.skills-window.is-open { min-height: 560px; }
+.skills-window.is-open { min-height: 500px; }
 
 .desktop-folder.is-docked .folder-window:not(.is-open) { display: none; }
 
@@ -520,10 +521,10 @@
   }
 
   .skills-window {
-    top: 24px;
+    top: -66px;
     left: 14%;
     width: 76%;
-    min-height: 390px;
+    min-height: 540px;
     padding: 17px 19px 22px;
   }
 
@@ -550,5 +551,5 @@
     overflow: auto;
   }
 
-  .skills-window.is-open { min-height: 540px; }
+  .skills-window.is-open { min-height: 490px; }
 }
