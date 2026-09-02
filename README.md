@@ -1,10 +1,19 @@
 # Kelly Wang — retro portfolio V2
 
-This is a dependency-free, code-first prototype for a retro computer/terminal-inspired SWE portfolio.
+This is a Vite + React portfolio for a retro computer/terminal-inspired SWE portfolio.
 
 ## Open it
 
-Open `index.html` in a browser. There is no build step or package install.
+```bash
+npm ci
+npm run dev
+```
+
+## GitHub Pages
+
+Push to `main` to deploy automatically through the GitHub Actions workflow. In the
+repository's **Settings → Pages**, set **Source** to **GitHub Actions**. The site is
+published at `https://kellywsq03.github.io/kelly_web/`.
 
 ## V2 direction
 

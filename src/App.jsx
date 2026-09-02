@@ -34,7 +34,6 @@ export default function App() {
   };
 
   return <>
-    <RetroNav onOpenTerminal={() => setTerminalOpen(true)} />
     <main>
       <BootScreen onOpenTerminal={() => setTerminalOpen(true)} />
       <ProjectDeck openProject={openProject} onToggle={toggleProject} />
