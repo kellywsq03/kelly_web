@@ -238,7 +238,7 @@
 .boot-copy {
   position: relative;
   min-width: 0;
-  min-height: 170px;
+  min-height: 208px;
   overflow: hidden;
 }
 
@@ -267,7 +267,7 @@
   opacity: 0;
   transform: translateY(8px);
   pointer-events: none;
-  font-size: clamp(10px, .95vw, 14px);
+  font-size: clamp(12px, 1.35vw, 16px);
 }
 
 .boot-status.is-ready {

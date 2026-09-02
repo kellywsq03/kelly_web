@@ -39,7 +39,6 @@ const bootLines = [
   ['executing welcome.exe...', false, 'is-execution'],
   ['BOOTING KELLY.DEV...', true],
   ['loading curiosity.... [ok]'],
-  ['loading python... [ok]'],
   ['loading thoughts... [ok]'],
 ];
 
@@ -242,7 +241,7 @@ export default function BootScreen({ onOpenTerminal }) {
                 {bootLines.slice(0, visibleLineCount).map(([line, highlighted, className]) => <div className={`boot-line ${className ?? ''}`} style={{ '--characters': line.length }} key={line}>{highlighted ? <b>{line}</b> : line}</div>)}
               </div>
               <div className={`boot-status ${isReady ? 'is-ready' : ''}`} aria-hidden={!isReady}>
-                <div><b>USER: kellywsq03</b></div><div><b>MODE: </b>open_to_work</div><div><b>AVAILABLE:</b></div><div>sep_26_to_jun_27  // intern</div><div>jun_27 // full-time</div>
+                <div><b>USER: kellywsq03</b></div><br></br><div><b>MODE: </b>open_to_work</div><br></br><div><b>AVAILABLE:</b></div><div>sep_26_to_jun_27  // intern</div><div>jun_27 // full-time</div>
               </div>
             </div>
             <div className="ghost" aria-label="Friendly ASCII portrait of Kelly with long wavy hair"><pre>{portrait}</pre><small>hi, I’m Kelly.</small></div>
