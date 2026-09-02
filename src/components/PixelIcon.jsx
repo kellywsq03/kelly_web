@@ -1,3 +1,5 @@
+import './PixelIcon.css';
+
 const paths = {
   code: <><rect x="3" y="5" width="26" height="22" fill="none" stroke="currentColor" strokeWidth="2" /><path d="M13 15 9 18l4 3m6-6 4 3-4 3" fill="none" stroke="currentColor" strokeWidth="2" /></>,
   react: <><circle cx="16" cy="16" r="3" fill="currentColor" /><ellipse cx="16" cy="16" rx="12" ry="5" fill="none" stroke="currentColor" strokeWidth="2" /><ellipse cx="16" cy="16" rx="12" ry="5" fill="none" stroke="currentColor" strokeWidth="2" transform="rotate(60 16 16)" /><ellipse cx="16" cy="16" rx="12" ry="5" fill="none" stroke="currentColor" strokeWidth="2" transform="rotate(120 16 16)" /></>,

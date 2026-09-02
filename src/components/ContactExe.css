@@ -1,0 +1,84 @@
+.contact-grid {
+  display: grid;
+  grid-template-columns: 0.8fr 1.2fr;
+  gap: 18px;
+}
+
+.contact-copy {
+  min-height: 410px;
+  border: var(--border);
+  background: var(--pink);
+  color: var(--black);
+  box-shadow: var(--shadow-dark);
+}
+
+.contact-copy .panel-head {
+  color: var(--black);
+  border-color: rgba(8, 11, 9, 0.35);
+}
+
+.contact-copy h2 {
+  margin-top: 55px;
+  color: var(--black);
+  text-shadow: 3px 3px 0 var(--paper);
+}
+
+.contact-copy p {
+  max-width: 400px;
+  font-size: 16px;
+  line-height: 1.45;
+}
+
+.contact-form {
+  border: var(--border);
+  background: var(--panel);
+  box-shadow: var(--shadow-dark);
+}
+
+.field {
+  display: grid;
+  gap: 7px;
+  margin-bottom: 16px;
+}
+
+label {
+  color: var(--green);
+  font: 10px var(--mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+input,
+textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 0;
+  outline: none;
+  color: var(--paper);
+  background: var(--black);
+  font: 12px var(--mono);
+}
+
+input:focus,
+textarea:focus {
+  border-color: var(--pink);
+  box-shadow: 4px 4px 0 var(--pink);
+}
+
+textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.form-note {
+  margin: 14px 0 0;
+  color: var(--dim);
+  font: 10px/1.5 var(--mono);
+}
+@media (max-width: 840px) {
+  .contact-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+}

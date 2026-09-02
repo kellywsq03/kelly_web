@@ -1,0 +1,78 @@
+.terminal {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: grid;
+  place-items: center;
+  padding: 22px;
+  background: rgba(0, 0, 0, 0.78);
+}
+
+.terminal-window {
+  width: min(900px, 100%);
+  max-height: 88vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 2px solid var(--green);
+  background: var(--black);
+  box-shadow: 12px 12px 0 var(--pink);
+}
+
+.terminal-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 13px 16px;
+  border-bottom: 1px solid var(--line);
+  color: var(--dim);
+  font: 10px var(--mono);
+}
+
+.terminal-close {
+  border: 0;
+  color: var(--pink);
+  background: transparent;
+  font-size: 22px;
+}
+
+.terminal-output {
+  flex: 1;
+  min-height: 200px;
+  overflow: auto;
+  padding: 20px 18px 8px;
+  font: 12px/1.7 var(--mono);
+}
+
+.terminal-line {
+  white-space: pre-wrap;
+}
+
+.terminal-line.command {
+  color: var(--amber);
+}
+
+.terminal-line.output {
+  margin: 2px 0 12px;
+  color: var(--dim);
+}
+
+.terminal-form {
+  display: flex;
+  gap: 9px;
+  padding: 13px 18px 17px;
+  border-top: 1px solid var(--line);
+}
+
+.terminal-form span {
+  padding-top: 11px;
+  color: var(--green);
+  font: 12px var(--mono);
+}
+
+.terminal-input {
+  border: 0;
+  padding: 10px 0;
+  background: transparent;
+  box-shadow: none !important;
+}

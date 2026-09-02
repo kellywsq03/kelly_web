@@ -1,5 +1,6 @@
 import PixelIcon from './PixelIcon';
 import { skills } from '../data/portfolio';
+import './SystemLog.css';
 
 const entries = [
   ['2023 → 2027', 'NUS / Bachelor of Computing in Computer Science', 'GPA 4.81 / 5.00 · Dean’s List · ASEAN Undergraduate Merit Scholarship'],

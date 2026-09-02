@@ -5,14 +5,22 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "prebuild": "npm run lint:css",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "lint:css": "stylelint \"src/**/*.css\"",
+    "lint:css:fix": "stylelint \"src/**/*.css\" --fix",
+    "format:css": "npm run lint:css:fix",
+    "format:css:check": "npm run lint:css"
   },
   "dependencies": {
     "@vitejs/plugin-react": "latest",
-    "vite": "latest",
     "react": "latest",
-    "react-dom": "latest"
+    "react-dom": "latest",
+    "vite": "latest"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "stylelint": "^16.26.1",
+    "stylelint-config-standard": "^39.0.0"
+  }
 }

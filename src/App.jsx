@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import './App.css';
 import RetroNav from './components/RetroNav';
 import BootScreen from './components/BootScreen';
 import ProjectDeck from './components/ProjectDeck';
