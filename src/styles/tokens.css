@@ -1,0 +1,6 @@
+:root {
+  --black: #080b09; --black-2: #101612; --panel: #161d17; --paper: #e9e2ce; --dim: #8e9b87; --line: #40523e;
+  --green: #baff74; --mint: #72f0cd; --pink: #ff64d7; --orange: #ff8a50; --amber: #ffca72; --blue: #83c7ff;
+  --mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace; --helvetica: Helvetica, Arial, sans-serif;
+  --display: "Lomo Copy Mezzo", "Courier New", var(--mono); --shadow: 8px 8px 0 var(--green); --shadow-dark: 8px 8px 0 var(--black); --border: 1.5px solid var(--green);
+}
