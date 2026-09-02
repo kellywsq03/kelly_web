@@ -276,7 +276,14 @@
   width: 0;
   overflow: hidden;
   white-space: nowrap;
-  animation: type-boot-line 3s steps(var(--characters)) forwards;
+  animation: type-boot-line 1s steps(var(--characters)) forwards;
+}
+
+.boot-line.is-command { color: var(--green); }
+
+.boot-line.is-execution {
+  margin-bottom: 7px;
+  color: var(--mint);
 }
 
 @keyframes type-boot-line {

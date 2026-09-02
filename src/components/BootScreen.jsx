@@ -35,10 +35,12 @@ const logo = `
 `;
 
 const bootLines = [
+  ['./welcome.exe', true, 'is-command'],
+  ['executing welcome.exe...', false, 'is-execution'],
   ['BOOTING KELLY.DEV...', true],
   ['loading curiosity.... [ok]'],
-  ['loading python..... [ok]'],
-  ['loading experience.... [ok]'],
+  ['loading python... [ok]'],
+  ['loading thoughts... [ok]'],
 ];
 
 const skillCategories = {
@@ -178,7 +180,7 @@ export default function BootScreen({ onOpenTerminal }) {
     setVisibleLineCount(0);
     setIsReady(false);
     const beforeFirstLnDelay = 250;
-    const betweenLnDelay = 3000;
+    const betweenLnDelay = 1500;
     const afterLastLnDelay = 2000;
     const timers = bootLines.map((_, index) => window.setTimeout(() => setVisibleLineCount(index + 1), beforeFirstLnDelay + index * betweenLnDelay));
     timers.push(window.setTimeout(() => setIsReady(true), beforeFirstLnDelay + bootLines.length * betweenLnDelay + afterLastLnDelay));
@@ -237,10 +239,10 @@ export default function BootScreen({ onOpenTerminal }) {
           <div className="boot-body">
             <div className="boot-copy">
               <div className={`boot-lines ${isReady ? 'is-complete' : ''}`} aria-live="polite">
-                {bootLines.slice(0, visibleLineCount).map(([line, highlighted]) => <div className="boot-line" style={{ '--characters': line.length }} key={line}>{highlighted ? <b>{line}</b> : line}</div>)}
+                {bootLines.slice(0, visibleLineCount).map(([line, highlighted, className]) => <div className={`boot-line ${className ?? ''}`} style={{ '--characters': line.length }} key={line}>{highlighted ? <b>{line}</b> : line}</div>)}
               </div>
               <div className={`boot-status ${isReady ? 'is-ready' : ''}`} aria-hidden={!isReady}>
-                <div><b>USER: kellywsq03</b></div><div><b>MODE: </b>open_to_work</div><div><b>AVAILABLE:</b></div><div>sep_26_to_jun_27 // intern</div><div>jun_27 // full-time</div>
+                <div><b>USER: kellywsq03</b></div><div><b>MODE: </b>open_to_work</div><div><b>AVAILABLE:</b></div><div>// intern</div><div>sep_26_to_jun_27</div><div>// full-time</div><div>jun_27</div>
               </div>
             </div>
             <div className="ghost" aria-label="Friendly ASCII portrait of Kelly with long wavy hair"><pre>{portrait}</pre><small>hi, I’m Kelly.</small></div>
