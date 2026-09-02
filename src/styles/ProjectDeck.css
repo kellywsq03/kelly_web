@@ -1,0 +1,240 @@
+.projects-deck {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  min-height: 570px;
+  padding: 28px 10px 54px;
+  overflow-x: auto;
+  overflow-y: visible;
+  scrollbar-color: var(--green) var(--black-2);
+}
+
+.project-card {
+  position: relative;
+  flex: 0 0 210px;
+  width: 210px;
+  min-height: 455px;
+  margin: 0 0 0 -27px;
+  padding: 18px 17px 20px;
+  border: var(--border);
+  background: var(--panel);
+  box-shadow: var(--shadow-dark);
+  color: var(--paper);
+  cursor: pointer;
+  transition:
+    flex-basis 0.4s cubic-bezier(0.2, 0.8, 0.2, 1),
+    transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 0.35s,
+    filter 0.35s,
+    opacity 0.35s;
+}
+
+.project-card:first-child {
+  margin-left: 3px;
+}
+
+.project-card:nth-child(1) {
+  z-index: 7;
+  transform: rotate(-3deg) translateY(12px);
+  border-color: var(--pink);
+  box-shadow: 9px 9px 0 var(--orange);
+}
+
+.project-card:nth-child(2) {
+  z-index: 6;
+  transform: rotate(2.1deg) translateY(2px);
+  border-color: var(--mint);
+}
+
+.project-card:nth-child(3) {
+  z-index: 5;
+  transform: rotate(-1.3deg) translateY(16px);
+  border-color: var(--amber);
+}
+
+.project-card:nth-child(4) {
+  z-index: 4;
+  transform: rotate(3.1deg);
+  border-color: var(--blue);
+}
+
+.project-card:nth-child(5) {
+  z-index: 3;
+  transform: rotate(-2.2deg) translateY(13px);
+}
+
+.project-card:nth-child(6) {
+  z-index: 2;
+  transform: rotate(2.4deg) translateY(5px);
+  border-color: var(--pink);
+}
+
+.project-card:hover,
+.project-card:focus-visible {
+  z-index: 12;
+  transform: translateY(-16px) rotate(0) !important;
+  box-shadow: 12px 12px 0 var(--green);
+  outline: none;
+}
+
+.project-card.is-open {
+  z-index: 15;
+  flex-basis: 330px;
+  width: 330px;
+  transform: translateY(-7px) rotate(0) !important;
+  box-shadow: 12px 12px 0 var(--pink);
+}
+
+.projects-deck.has-open .project-card:not(.is-open) {
+  filter: saturate(0.45);
+  opacity: 0.47;
+}
+
+.project-top {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 8px;
+  color: var(--dim);
+  font: 10px var(--mono);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.project-top > span:last-child {
+  grid-column: 1/-1;
+}
+
+.project-card:nth-child(1) strong {
+  color: var(--pink);
+}
+
+.project-card:nth-child(2) strong {
+  color: var(--mint);
+}
+
+.project-card:nth-child(3) strong {
+  color: var(--amber);
+}
+
+.project-card:nth-child(4) strong {
+  color: var(--blue);
+}
+
+.project-card:nth-child(5) strong {
+  color: var(--green);
+}
+
+.project-card:nth-child(6) strong {
+  color: var(--pink);
+}
+
+.project-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid currentColor;
+  border-radius: 8px;
+  color: var(--paper);
+  background: rgba(8, 11, 9, 0.42);
+}
+
+.project-icon .pixel-icon {
+  width: 21px;
+  height: 21px;
+}
+
+.project-card h3 {
+  margin: 18px 0 7px;
+  font: 900 clamp(26px, 4vw, 45px)/0.92 var(--display);
+  letter-spacing: -0.08em;
+  text-transform: uppercase;
+}
+
+.project-card p {
+  margin: 0;
+  color: var(--dim);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.project-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 17px;
+}
+
+.project-hint {
+  position: absolute;
+  right: 22px;
+  bottom: 22px;
+  color: var(--amber);
+  font: 11px var(--mono);
+}
+
+.project-details {
+  display: none;
+  gap: 15px;
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px dashed var(--line);
+}
+
+.project-card.is-open .project-details {
+  display: grid;
+  animation: reveal 0.35s ease both;
+}
+@keyframes reveal {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+.detail-label {
+  color: var(--dim);
+  font: 10px var(--mono);
+  text-transform: uppercase;
+}
+
+.detail-value {
+  margin-top: 6px;
+  color: var(--paper);
+  font: 14px/1.45 var(--helvetica);
+}
+
+.deck-note {
+  margin: 34px 0 0 10%;
+  color: var(--dim);
+  font: 11px var(--mono);
+}
+
+.deck-note span {
+  color: var(--green);
+}
+@media (max-width: 840px) {
+  .projects-deck {
+    min-height: 0;
+    padding-bottom: 10px;
+  }
+
+  .project-card,
+  .project-card:nth-child(n) {
+    flex: 0 0 210px;
+    width: 210px;
+    min-height: 455px;
+    margin: 0 0 0 -27px;
+    transform: none;
+  }
+
+  .project-card.is-open {
+    flex-basis: 300px;
+    width: 300px;
+  }
+
+  .deck-note {
+    margin-left: 0;
+  }
+}

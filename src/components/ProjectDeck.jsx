@@ -1,5 +1,6 @@
 import PixelIcon from './PixelIcon';
 import { projects } from '../data/portfolio';
+import '../styles/ProjectDeck.css';
 
 export default function ProjectDeck({ openProject, onToggle }) {
   return (

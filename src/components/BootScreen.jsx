@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import '../styles/BootScreen.css';
 
 const portrait = `
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣤⠶⢦⡀⠀⠀⢀⣀⡀⠀⠀
@@ -44,8 +45,11 @@ export default function BootScreen({ onOpenTerminal }) {
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
-    const timers = bootLines.map((_, index) => window.setTimeout(() => setVisibleLineCount(index + 1), 250 + index * 3000));
-    timers.push(window.setTimeout(() => setIsReady(true), 450 + bootLines.length * 3000 + 2000));
+    const beforeFirstLnDelay = 250;
+    const betweenLnDelay = 3000;
+    const afterLastLnDelay = 2000;
+    const timers = bootLines.map((_, index) => window.setTimeout(() => setVisibleLineCount(index + 1), beforeFirstLnDelay + index * betweenLnDelay));
+    timers.push(window.setTimeout(() => setIsReady(true), beforeFirstLnDelay + bootLines.length * betweenLnDelay + afterLastLnDelay));
     return () => timers.forEach(window.clearTimeout);
   }, []);
 

@@ -1,0 +1,256 @@
+.hero {
+  padding: 150px 0 150px;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 4fr 6fr;
+  gap: 60px;
+  align-items: center;
+}
+
+.eyebrow {
+  color: var(--green);
+  font: 11px var(--mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.eyebrow::before {
+  content: '>_ ';
+  color: var(--pink);
+}
+
+.hero-copy {
+  max-width: 600px;
+  color: var(--dim);
+  font-size: 18px;
+  line-height: 1.55;
+}
+
+.hero-copy strong {
+  color: var(--paper);
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 28px;
+}
+
+.button.dark {
+  color: var(--green);
+  background: var(--black-2);
+  box-shadow: 4px 4px 0 var(--orange);
+}
+
+.boot-screen {
+  position: relative;
+  min-height: 390px;
+  padding: 26px 30px 32px;
+  border: var(--border);
+  border-radius: 22px;
+  background: var(--panel);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.boot-screen::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    120deg,
+    transparent 30%,
+    rgba(186, 255, 116, 0.12) 50%,
+    transparent 70%
+  );
+  transform: translateX(-100%);
+  animation: sweep 6s linear infinite;
+}
+@keyframes sweep {
+  55%,
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.window-bar {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--line);
+  color: var(--dim);
+  font: 10px var(--mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.window-lights {
+  display: flex;
+  gap: 5px;
+}
+
+.window-lights i {
+  display: block;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--pink);
+}
+
+.window-lights i:nth-child(2) {
+  background: var(--amber);
+}
+
+.window-lights i:nth-child(3) {
+  background: var(--green);
+}
+
+.boot-body {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1.25fr 0.75fr;
+  align-items: center;
+  gap: 30px;
+  min-height: 278px;
+  padding: 28px 14px 16px;
+}
+
+.boot-copy {
+  position: relative;
+  min-height: 170px;
+}
+
+.boot-lines,
+.boot-status {
+  position: absolute;
+  inset: 0;
+  color: var(--dim);
+  font: 14px/1.9 var(--mono);
+  transition:
+    opacity 1s ease,
+    transform 1s ease;
+}
+
+.boot-lines b,
+.boot-status b {
+  color: var(--green);
+  font-weight: 400;
+}
+
+.boot-lines.is-complete {
+  opacity: 0;
+  transform: translateY(-8px);
+  pointer-events: none;
+}
+
+.boot-status {
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
+}
+
+.boot-status.is-ready {
+  opacity: 1;
+  transform: none;
+}
+
+.boot-line {
+  width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  animation: type-boot-line 3s steps(var(--characters)) forwards;
+}
+@keyframes type-boot-line {
+  to {
+    width: calc(var(--characters) * 1ch);
+  }
+}
+
+.ghost {
+  position: relative;
+  align-self: stretch;
+  display: grid;
+  place-content: center;
+  padding: 14px;
+  border: 1px solid var(--mint);
+  border-radius: 14px;
+  color: var(--mint);
+  background: rgba(8, 11, 9, 0.38);
+  font: 13px/1.05 var(--mono);
+  text-align: center;
+  text-shadow: 0 0 12px rgba(114, 240, 205, 0.8);
+}
+
+.ghost::before {
+  content: 'ID PORTRAIT';
+  position: absolute;
+  top: 10px;
+  left: 12px;
+  color: var(--dim);
+  font: 9px var(--mono);
+  letter-spacing: 0.08em;
+  text-shadow: none;
+}
+
+.ghost pre {
+  margin: 8px 0 0;
+}
+
+.ghost small {
+  display: block;
+  margin-top: 12px;
+  color: var(--paper);
+  font-size: 10px;
+  letter-spacing: 0.05em;
+}
+
+.boot-prompt {
+  position: absolute;
+  right: 30px;
+  bottom: 17px;
+  color: var(--amber);
+  font: 11px var(--mono);
+  animation: blink 1.1s steps(2) infinite;
+}
+@keyframes blink {
+  50% {
+    opacity: 0.3;
+  }
+}
+@media (max-width: 840px) {
+  .hero {
+    padding-top: 48px;
+  }
+
+  .hero-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .boot-screen {
+    padding: 22px;
+  }
+
+  .boot-body {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    min-height: 0;
+    padding: 24px 4px 18px;
+  }
+
+  .boot-copy {
+    min-height: 150px;
+  }
+
+  .ghost {
+    min-height: 190px;
+  }
+
+  .boot-prompt {
+    right: 22px;
+  }
+}
