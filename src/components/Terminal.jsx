@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { terminalCommands } from '../data/portfolio';
-import './Terminal.css';
+import '../styles/Terminal.css';
 
 export default function Terminal({ isOpen, onClose, onOpenProject }) {
   const inputRef = useRef(null);

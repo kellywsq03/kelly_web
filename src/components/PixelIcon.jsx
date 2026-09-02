@@ -1,4 +1,4 @@
-import './PixelIcon.css';
+import '../styles/PixelIcon.css';
 
 const paths = {
   code: <><rect x="3" y="5" width="26" height="22" fill="none" stroke="currentColor" strokeWidth="2" /><path d="M13 15 9 18l4 3m6-6 4 3-4 3" fill="none" stroke="currentColor" strokeWidth="2" /></>,

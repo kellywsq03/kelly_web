@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import './ContactExe.css';
+import '../styles/ContactExe.css';
 
 export default function ContactExe({ onSubmit }) {
   const [form, setForm] = useState({ name: '', email: '', message: '' });

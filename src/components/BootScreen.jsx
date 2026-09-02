@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import './BootScreen.css';
+import '../styles/BootScreen.css';
 
 const portrait = `
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣤⠶⢦⡀⠀⠀⢀⣀⡀⠀⠀

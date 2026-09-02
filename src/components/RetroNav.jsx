@@ -1,4 +1,4 @@
-import './RetroNav.css';
+import '../styles/RetroNav.css';
 
 export default function RetroNav({ onOpenTerminal }) {
   return (
