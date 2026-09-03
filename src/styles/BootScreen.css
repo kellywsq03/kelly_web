@@ -1,73 +1,76 @@
 .hero {
   position: relative;
-  min-height: 770px;
-  padding: 110px 0 120px;
+  min-height: max(980px, calc(100svh + 280px));
+  padding: clamp(160px, 20vh, 260px) 0 clamp(190px, 24vh, 320px);
 }
 
-.folder-hint {
+.hero-title {
   position: absolute;
-  top: 48px;
-  left: 0;
+  top: clamp(26px, 4vh, 48px);
+  left: 50%;
+  width: 0;
   margin: 0;
-  color: var(--dim);
+  overflow: hidden;
+  border-right: 1px solid var(--green);
+  color: var(--paper);
   font: 10px var(--mono);
   letter-spacing: .08em;
   text-transform: uppercase;
-  overflow: hidden;
-  width: 0;
-  border-right: 1px solid var(--green);
   white-space: nowrap;
-  animation: type-folder-hint 5.6s steps(25) infinite, blink-folder-caret .75s steps(2) infinite;
+  transform: translateX(-50%);
+  animation: type-hero-title 4.8s steps(13) infinite, blink-hero-caret .75s steps(2) infinite;
 }
 
-@keyframes type-folder-hint {
-  0%, 12% { width: 0; }
+@keyframes type-hero-title {
+  0%, 15% { width: 0; }
 
-  50%, 76% { width: 25ch; }
+  52%, 78% { width: 18ch; }
 
   100% { width: 0; }
 }
 
-@keyframes blink-folder-caret {
+@keyframes blink-hero-caret {
   50% { border-color: transparent; }
+}
+
+.folder-hint {
+  position: absolute;
+  z-index: 6;
+  top: 51%;
+  left: 50%;
+  margin: 0;
+  padding: 12px 18px;
+  border: 1px solid rgba(186, 255, 116, .35);
+  border-radius: 12px;
+  color: var(--paper);
+  background: rgba(8, 11, 9, .82);
+  box-shadow: 4px 4px 0 rgba(8, 11, 9, .45);
+  font: 10px var(--mono);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transform: translate(-50%, -50%);
 }
 
 .desktop-folder {
   position: relative;
   width: min(850px, 88vw);
   height: 570px;
-  margin: 42px auto 0;
+  margin: max(80px, calc(100svh - 820px)) auto 0;
   transition: width .5s ease, height .5s ease, transform .5s ease;
 }
 
 .folder-face {
   position: absolute;
   z-index: 4;
-  inset: 100px 0 0;
-  border: var(--border);
-  border-radius: 28px;
-  background: linear-gradient(145deg, #2f3731, #1b211c 80%);
-  box-shadow: 10px 10px 0 var(--orange), inset 0 1px rgba(255, 255, 255, .08);
-  opacity: .65;
-  transition: transform .35s ease, box-shadow .35s ease;
-}
-
-.folder-tab {
-  position: absolute;
-  z-index: 5;
-  top: 78px;
-  left: 34px;
-  width: 178px;
-  height: 42px;
-  padding: 13px 17px;
-  border: var(--border);
-  border-bottom: 0;
-  border-radius: 17px 17px 0 0;
-  color: var(--black);
-  background: var(--green);
-  font: 800 10px var(--mono);
-  letter-spacing: .08em;
-  text-transform: uppercase;
+  top: 12px;
+  left: 0;
+  width: 100%;
+  height: auto;
+  max-height: 100%;
+  filter: drop-shadow(10px 10px 0 var(--blue));
+  pointer-events: none;
+  transition: transform .35s ease, filter .35s ease;
 }
 
 .folder-window {
@@ -159,7 +162,7 @@
 .desktop-folder:has(.folder-window:hover) .folder-face,
 .desktop-folder:has(.folder-window:focus-visible) .folder-face {
   transform: translateY(20px) scale(1.025);
-  box-shadow: 14px 17px 0 var(--orange), inset 0 1px rgba(255, 255, 255, .08);
+  filter: drop-shadow(14px 17px 0 var(--orange));
 }
 
 .boot-screen:hover,
@@ -485,33 +488,31 @@
   position: static;
 }
 
-.desktop-folder.is-docked .folder-tab {
-  position: absolute;
-  top: auto;
-  bottom: 102px;
-  left: calc(50% - 176px);
-  transform: scale(.75);
-  transform-origin: bottom left;
-}
-
 .desktop-folder.is-docked .folder-face {
-  inset: auto;
+  position: absolute;
+  top: var(--docked-folder-top);
   right: 0;
-  bottom: 0;
+  bottom: auto;
   left: 0;
   width: min(400px, 100%);
-  height: 102px;
+  max-height: none;
   margin: auto;
-  border-radius: 24px 24px 0 0;
-  box-shadow: 6px 0 0 var(--orange);
+  filter: drop-shadow(6px 0 0 var(--blue));
+}
+
+.desktop-folder.is-docked .folder-hint {
+  display: none;
 }
 
 .folder-window.is-open {
   position: absolute;
   z-index: 30;
-  top: 50%;
+  top: var(--open-window-center, 50%);
   left: 50%;
   width: min(650px, calc(100vw - 40px));
+  max-height: calc(100svh - 260px);
+  min-height: 0;
+  overflow: auto;
   transform: translate(-50%, -50%) rotate(0);
   box-shadow: 16px 20px 0 var(--pink);
   cursor: default;
@@ -528,15 +529,19 @@
 
 @media (max-width: 840px) {
   .hero {
-    min-height: 680px;
-    padding-top: 72px;
+    min-height: max(800px, calc(100svh + 180px));
+    padding: clamp(120px, 18vh, 180px) 0 clamp(150px, 20vh, 220px);
   }
-
-  .folder-hint { top: 24px; }
 
   .desktop-folder {
     width: min(580px, 96vw);
     height: 520px;
+    margin-top: max(48px, calc(100svh - 680px));
+  }
+
+  .folder-hint {
+    padding: 10px 14px;
+    font-size: 9px;
   }
 
   .boot-screen {
@@ -584,9 +589,8 @@
 
   .folder-window.is-open {
     width: min(600px, calc(100vw - 28px));
-    max-height: calc(100vh - 120px);
-    overflow: auto;
+    max-height: calc(100svh - 190px);
   }
 
-  .skills-window.is-open { min-height: 490px; }
+  .skills-window.is-open { min-height: 0; }
 }
