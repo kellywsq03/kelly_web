@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { skills } from '../data/portfolio';
+import folderGraphic from '../assets/figma-folder.svg';
 import '../styles/BootScreen.css';
 
 const portrait = `
@@ -172,6 +173,7 @@ export default function BootScreen({ onOpenTerminal }) {
   const [visibleLineCount, setVisibleLineCount] = useState(0);
   const [isReady, setIsReady] = useState(false);
   const [openWindow, setOpenWindow] = useState(null);
+  const [dockedLayout, setDockedLayout] = useState(null);
   const [bootRun, setBootRun] = useState(0);
   const [skillsSorted, setSkillsSorted] = useState(false);
 
@@ -208,6 +210,23 @@ export default function BootScreen({ onOpenTerminal }) {
     if (openWindow === 'skills') setSkillsSorted(false);
   }, [openWindow]);
 
+  const placeDockedFolder = () => {
+    const horizontalInset = window.innerWidth <= 840 ? 28 : 44;
+    const folderWidth = Math.min(400, Math.max(0, window.innerWidth - horizontalInset));
+    const folderHeight = folderWidth * (542.667 / 678.333);
+    setDockedLayout({
+      folderTop: window.scrollY + window.innerHeight - folderHeight / 2,
+      windowCenter: window.scrollY + window.innerHeight / 2,
+    });
+  };
+
+  useEffect(() => {
+    if (!openWindow) return undefined;
+    placeDockedFolder();
+    window.addEventListener('resize', placeDockedFolder);
+    return () => window.removeEventListener('resize', placeDockedFolder);
+  }, [openWindow]);
+
   const toggleWindow = (windowName) => setOpenWindow((current) => current === windowName ? null : windowName);
   const onCardKeyDown = (event, windowName) => {
     if (event.target !== event.currentTarget) return;
@@ -218,15 +237,19 @@ export default function BootScreen({ onOpenTerminal }) {
   };
 
   return (
-    <section className={`wrap hero ${openWindow ? 'has-open-window' : ''}`} id="top">
-      <p className="folder-hint">open a file to explore_</p>
+    <section
+      className={`wrap hero ${openWindow ? 'has-open-window' : ''}`}
+      id="top"
+      style={dockedLayout ? { '--docked-folder-top': `${dockedLayout.folderTop}px`, '--open-window-center': `${dockedLayout.windowCenter}px` } : undefined}
+    >
+      <p className="hero-title">kelly's space //</p>
       <div
         className={`desktop-folder ${openWindow ? 'is-docked' : ''}`}
         aria-label="Welcome folder"
         onClick={() => { if (openWindow) setOpenWindow(null); }}
       >
-        <div className="folder-tab">kelly.dev</div>
-        <div className="folder-face" aria-hidden="true" />
+        <img className="folder-face" src={folderGraphic} alt="" aria-hidden="true" />
+        <p className="folder-hint">open a file to explore_</p>
         <article
           className={`boot-screen folder-window ${openWindow === 'boot' ? 'is-open' : ''}`}
           aria-label="Retro computer welcome panel"
