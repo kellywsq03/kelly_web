@@ -14,6 +14,7 @@
     "format:css:check": "stylelint \"src/**/*.css\""
   },
   "dependencies": {
+    "@formspree/react": "^3.0.0",
     "@vitejs/plugin-react": "latest",
     "react": "latest",
     "react-dom": "latest",
