@@ -667,7 +667,7 @@
   .desktop-folder {
     width: min(580px, 96vw);
     height: 560px;
-    margin-top: max(48px, calc(100svh - 680px));
+    margin-top: max(64px, calc(100svh - 680px));
   }
 
   .desktop-folder:not(.is-docked) .folder-face {
@@ -683,28 +683,41 @@
     transform: translate(-50%, 50%);
   }
 
+  .desktop-folder:not(.is-docked) .folder-window {
+    right: auto;
+    left: 50%;
+    width: 88%;
+    animation: none;
+    transform: translateX(-50%);
+  }
+
   .boot-screen {
-    top: -14px;
-    left: 5%;
-    width: 77%;
+    z-index: 2;
+    top: -52px;
     min-height: 400px;
     padding: 20px;
   }
 
   .intro-window {
-    top: 12px;
-    right: 4%;
-    width: 72%;
+    z-index: 3;
+    top: 0;
     min-height: 330px;
     padding: 17px 19px 22px;
   }
 
   .skills-window {
-    top: -66px;
-    left: 14%;
-    width: 76%;
+    top: -104px;
     min-height: 540px;
     padding: 17px 19px 22px;
+  }
+
+  .desktop-folder:not(.is-docked) .boot-screen:hover,
+  .desktop-folder:not(.is-docked) .boot-screen:focus-visible,
+  .desktop-folder:not(.is-docked) .intro-window:hover,
+  .desktop-folder:not(.is-docked) .intro-window:focus-visible,
+  .desktop-folder:not(.is-docked) .skills-window:hover,
+  .desktop-folder:not(.is-docked) .skills-window:focus-visible {
+    transform: translateX(-50%);
   }
 
   .boot-body {
