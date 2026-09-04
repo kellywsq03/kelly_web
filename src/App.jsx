@@ -29,6 +29,14 @@ const saveShellPreference = (key) => {
   }
 };
 
+const clearShellPreference = (key) => {
+  try {
+    window.localStorage.removeItem(key);
+  } catch {
+    // The shell still works when browser storage is unavailable.
+  }
+};
+
 export default function App() {
   const [terminalOpen, setTerminalOpen] = useState(false);
   const [terminalDiscovered, setTerminalDiscovered] = useState(() => readShellPreference('kelly-shell-discovered'));
@@ -38,8 +46,10 @@ export default function App() {
   const toggleProject = (id) => setOpenProject((current) => current === id ? null : id);
   const discoverTerminal = () => {
     setTerminalDiscovered(true);
+    setTerminalTabDismissed(false);
     setTerminalOpen(true);
     saveShellPreference('kelly-shell-discovered');
+    clearShellPreference('kelly-shell-tab-dismissed');
   };
   const dismissTerminalTab = () => {
     setTerminalTabDismissed(true);
