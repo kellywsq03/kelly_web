@@ -29,6 +29,40 @@ export default function App() {
     return () => document.removeEventListener('keydown', onKeyDown);
   }, []);
 
+  useEffect(() => {
+    const elements = document.querySelectorAll('[data-reveal]');
+    if (!('IntersectionObserver' in window)) {
+      elements.forEach((element) => element.classList.add('is-revealed'));
+      return undefined;
+    }
+
+    let lastScrollY = window.scrollY;
+    let scrollDirection = 'down';
+    const trackScrollDirection = () => {
+      const nextScrollY = window.scrollY;
+      if (nextScrollY !== lastScrollY) scrollDirection = nextScrollY > lastScrollY ? 'down' : 'up';
+      lastScrollY = nextScrollY;
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.toggle('reveal-from-above', scrollDirection === 'up');
+          entry.target.classList.add('is-revealed');
+        } else {
+          entry.target.classList.remove('is-revealed');
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+
+    window.addEventListener('scroll', trackScrollDirection, { passive: true });
+    elements.forEach((element) => observer.observe(element));
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('scroll', trackScrollDirection);
+    };
+  }, []);
+
   const stageMessage = () => {
     setToast(true);
     window.setTimeout(() => setToast(false), 4500);
@@ -39,10 +73,10 @@ export default function App() {
       <BootScreen onOpenTerminal={() => setTerminalOpen(true)} />
       <ProjectDeck openProject={openProject} onToggle={toggleProject} />
       <SystemLog />
-      <section className="wrap" id="writing"><div className="section-head"><div><div className="section-kicker">writing // build logs</div><h2>thoughts.md</h2></div><p className="section-intro">Short notes about the engineering decisions, debugging stories, and small details that do not fit inside a project bullet point.</p></div><div className="writing-grid">{posts.map(([date, title, meta]) => <a className="post" href="#contact" key={title}><span className="post-date">{date}</span><h3>{title}</h3><span className="post-meta">{meta}</span></a>)}</div></section>
+      <section className="wrap" id="writing"><div className="section-head" data-reveal><div><div className="section-kicker">writing // build logs</div><h2>thoughts.md</h2></div><p className="section-intro">Short notes about the engineering decisions, debugging stories, and small details that do not fit inside a project bullet point.</p></div><div className="writing-grid">{posts.map(([date, title, meta], index) => <a className="post" href="#contact" key={title} data-reveal style={{ '--reveal-delay': `${index * 180}ms` }}><span className="post-date">{date}</span><h3>{title}</h3><span className="post-meta">{meta}</span></a>)}</div></section>
       <ContactExe onSubmit={stageMessage} />
     </main>
-    <footer className="wrap"><span>© 2026 Kelly Wang Sze Qing // built with curiosity</span><span><a href="https://github.com/kellywsq03" target="_blank" rel="noreferrer">github ↗</a> · <a href="https://www.linkedin.com/in/kelly-wang-sq/" target="_blank" rel="noreferrer">linkedin ↗</a></span><span><a href="#top">reboot ↑</a></span></footer>
+    <footer className="wrap" data-reveal><span>© 2026 Kelly Wang Sze Qing // built with curiosity</span><span><a href="https://github.com/kellywsq03" target="_blank" rel="noreferrer">github ↗</a> · <a href="https://www.linkedin.com/in/kelly-wang-sq/" target="_blank" rel="noreferrer">linkedin ↗</a></span><span><a href="#top">reboot ↑</a></span></footer>
     <Terminal isOpen={terminalOpen} onClose={() => setTerminalOpen(false)} onOpenProject={setOpenProject} />
     <div className={`toast ${toast ? 'is-visible' : ''}`} role="status" aria-live="polite">Message staged. Connect your email endpoint to send it for real.</div>
   </>;
