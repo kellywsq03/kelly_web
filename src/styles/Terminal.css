@@ -44,8 +44,14 @@
   font: 10px var(--mono);
 }
 
+.terminal-collapsed-bar {
+  display: flex;
+  align-items: stretch;
+}
+
 .terminal-reopen {
-  width: 100%;
+  min-width: 0;
+  flex: 1;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -66,6 +72,22 @@
   color: var(--pink);
   font-size: 17px;
   line-height: 0;
+}
+
+.terminal-dismiss {
+  width: 46px;
+  border: 0;
+  border-left: 1px solid var(--line);
+  padding: 0;
+  color: var(--pink);
+  background: transparent;
+  font: 22px var(--mono);
+}
+
+.terminal-dismiss:hover,
+.terminal-dismiss:focus-visible {
+  color: var(--black);
+  background: var(--pink);
 }
 
 .terminal-close {

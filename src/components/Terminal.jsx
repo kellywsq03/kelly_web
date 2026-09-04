@@ -2,8 +2,9 @@ import { useEffect, useRef, useState } from 'react';
 import { terminalCommands } from '../data/portfolio';
 import '../styles/Terminal.css';
 
-export default function Terminal({ isOpen, onClose, onOpen, onOpenProject }) {
+export default function Terminal({ isVisible, isOpen, onClose, onOpen, onDismiss, onOpenProject }) {
   const inputRef = useRef(null);
+  const outputRef = useRef(null);
   const initializedRef = useRef(false);
   const terminalRef = useRef(null);
   const dragRef = useRef(null);
@@ -14,12 +15,17 @@ export default function Terminal({ isOpen, onClose, onOpen, onOpenProject }) {
   useEffect(() => {
     if (isOpen) {
       if (!initializedRef.current) {
-        setLines([{ text: 'Welcome to kelly.dev // v2.', kind: 'output' }, { text: 'Type “help” to explore. Try “open clockedit”.', kind: 'output' }]);
+        setLines([{ text: 'Type “help” to explore. Try “open clockedit”.', kind: 'command' }]);
         initializedRef.current = true;
       }
       window.setTimeout(() => inputRef.current?.focus(), 120);
     }
   }, [isOpen]);
+
+  useEffect(() => {
+    if (!isOpen || !outputRef.current) return;
+    outputRef.current.scrollTop = outputRef.current.scrollHeight;
+  }, [isOpen, lines]);
 
   const submit = (event) => {
     event.preventDefault();
@@ -31,9 +37,9 @@ export default function Terminal({ isOpen, onClose, onOpen, onOpenProject }) {
     const next = [{ text: `$ ${raw}`, kind: 'command' }];
     if (normalized.startsWith('open ')) {
       const id = normalized.slice(5).trim().replace(/[^a-z0-9-]/g, '');
-      const found = ['clockedit', 'simfella', 'power-grid-copilot', 'java-slang', 'planefella', 'respondr'].includes(id);
+      const found = ['clockedit', 'simfella', 'cerebro', 'sourceacademy', 'planefella', 'respondr'].includes(id);
       next.push({ text: found ? `Opening ${id} in the project deck.` : 'project not found. Try “open clockedit”.', kind: 'output' });
-      if (found) { onOpenProject(id); document.querySelector('#work')?.scrollIntoView({ behavior: 'smooth' }); }
+      if (found) { onOpenProject(id); document.querySelector('#projects')?.scrollIntoView({ behavior: 'smooth' }); }
     } else if (terminalCommands[normalized] !== undefined) {
       next.push({ text: terminalCommands[normalized], kind: 'output' });
       if (normalized === 'contact') document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' });
@@ -83,14 +89,16 @@ export default function Terminal({ isOpen, onClose, onOpen, onOpenProject }) {
     if (dragRef.current?.pointerId === event.pointerId) dragRef.current = null;
   };
 
+  if (!isVisible) return null;
+
   return (
     <div ref={terminalRef} className={`terminal ${isOpen ? 'is-open' : 'is-closed'} ${position ? 'has-position' : ''}`} style={position ? { '--terminal-x': `${position.x}px`, '--terminal-y': `${position.y}px` } : undefined}>
       <div className="terminal-window" role={isOpen ? 'dialog' : undefined} aria-labelledby={isOpen ? 'terminal-title' : undefined}>
         {isOpen ? <>
-          <div className="terminal-head" onPointerDown={startDrag} onPointerMove={drag} onPointerUp={finishDrag} onPointerCancel={cancelDrag}><span id="terminal-title">kelly@portfolio:~ // interactive shell</span><button className="terminal-close" type="button" onClick={onClose} aria-label="Close terminal">×</button></div>
-          <div className="terminal-output">{lines.map((line, index) => <div className={`terminal-line ${line.kind}`} key={`${line.text}-${index}`}>{line.text}</div>)}</div>
+          <div className="terminal-head" onPointerDown={startDrag} onPointerMove={drag} onPointerUp={finishDrag} onPointerCancel={cancelDrag}><span id="terminal-title">kelly@portfolio:~</span><button className="terminal-close" type="button" onClick={onClose} aria-label="Close terminal">×</button></div>
+          <div ref={outputRef} className="terminal-output">{lines.map((line, index) => <div className={`terminal-line ${line.kind}`} key={`${line.text}-${index}`}>{line.text}</div>)}</div>
           <form className="terminal-form" onSubmit={submit}><span>visitor@kelly.dev $</span><input ref={inputRef} className="terminal-input" value={input} onChange={(event) => setInput(event.target.value)} autoComplete="off" aria-label="Terminal command" placeholder="type help" /></form>
-        </> : <button className="terminal-reopen" type="button" onClick={onOpen} aria-label="Open interactive shell"><span>kelly@portfolio:~ // interactive shell</span><span aria-hidden="true">⌃</span></button>}
+        </> : <div className="terminal-collapsed-bar"><button className="terminal-reopen" type="button" onClick={onOpen} aria-label="Open interactive shell"><span>kelly@portfolio:~ // interactive shell</span><span aria-hidden="true">⌃</span></button><button className="terminal-dismiss" type="button" onClick={onDismiss} aria-label="Permanently hide shell tab">×</button></div>}
       </div>
     </div>
   );

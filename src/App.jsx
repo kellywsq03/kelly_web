@@ -13,15 +13,42 @@ const posts = [
   ['2025.12.08', 'Three tiny details that made a side project feel finished', '3 min / craft'],
 ];
 
+const readShellPreference = (key) => {
+  try {
+    return window.localStorage.getItem(key) === 'true';
+  } catch {
+    return false;
+  }
+};
+
+const saveShellPreference = (key) => {
+  try {
+    window.localStorage.setItem(key, 'true');
+  } catch {
+    // The shell still works when browser storage is unavailable.
+  }
+};
+
 export default function App() {
   const [terminalOpen, setTerminalOpen] = useState(false);
+  const [terminalDiscovered, setTerminalDiscovered] = useState(() => readShellPreference('kelly-shell-discovered'));
+  const [terminalTabDismissed, setTerminalTabDismissed] = useState(() => readShellPreference('kelly-shell-tab-dismissed'));
   const [openProject, setOpenProject] = useState(null);
   const [toast, setToast] = useState(false);
   const toggleProject = (id) => setOpenProject((current) => current === id ? null : id);
+  const discoverTerminal = () => {
+    setTerminalDiscovered(true);
+    setTerminalOpen(true);
+    saveShellPreference('kelly-shell-discovered');
+  };
+  const dismissTerminalTab = () => {
+    setTerminalTabDismissed(true);
+    saveShellPreference('kelly-shell-tab-dismissed');
+  };
 
   useEffect(() => {
     const onKeyDown = (event) => {
-      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') { event.preventDefault(); setTerminalOpen(true); }
+      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') { event.preventDefault(); discoverTerminal(); }
       if (event.key === 'Escape') setTerminalOpen(false);
       if (event.key === 'Enter' && event.target === document.body) document.querySelector('#projects')?.scrollIntoView({ behavior: 'smooth' });
     };
@@ -74,14 +101,14 @@ export default function App() {
 
   return <>
     <main>
-      <BootScreen onOpenTerminal={() => setTerminalOpen(true)} />
+      <BootScreen onOpenTerminal={discoverTerminal} />
       <ProjectDeck openProject={openProject} onToggle={toggleProject} />
       <SystemLog />
       <section className="wrap" id="writing"><div className="section-head" data-reveal><div><div className="section-kicker">writing // build logs</div><h2>thoughts.md</h2></div><p className="section-intro">Short notes about the engineering decisions, debugging stories, and small details that do not fit inside a project bullet point.</p></div><div className="writing-grid">{posts.map(([date, title, meta], index) => <a className="post" href="#contact" key={title} data-reveal style={{ '--reveal-delay': `${index * 180}ms` }}><span className="post-date">{date}</span><h3>{title}</h3><span className="post-meta">{meta}</span></a>)}</div></section>
       <ContactExe onSubmit={stageMessage} />
     </main>
     <footer className="wrap" data-reveal><span>© 2026 Kelly Wang Sze Qing // built with curiosity</span><span><a href="https://github.com/kellywsq03" target="_blank" rel="noreferrer">github ↗</a> · <a href="https://www.linkedin.com/in/kelly-wang-sq/" target="_blank" rel="noreferrer">linkedin ↗</a></span><span><a href="#top">reboot ↑</a></span></footer>
-    <Terminal isOpen={terminalOpen} onClose={() => setTerminalOpen(false)} onOpen={() => setTerminalOpen(true)} onOpenProject={setOpenProject} />
+    <Terminal isVisible={terminalOpen || (terminalDiscovered && !terminalTabDismissed)} isOpen={terminalOpen} onClose={() => setTerminalOpen(false)} onOpen={() => setTerminalOpen(true)} onDismiss={dismissTerminalTab} onOpenProject={setOpenProject} />
     <div className={`toast ${toast ? 'is-visible' : ''}`} role="status" aria-live="polite">Message staged. Connect your email endpoint to send it for real.</div>
   </>;
 }
