@@ -50,6 +50,7 @@
   text-transform: uppercase;
   white-space: nowrap;
   transform: translate(-50%, -50%);
+  align-self: center;
 }
 
 .desktop-folder {
@@ -490,6 +491,7 @@
 
 .desktop-folder.is-docked .folder-face {
   position: absolute;
+  z-index: 31;
   top: var(--docked-folder-top);
   right: 0;
   bottom: auto;
@@ -506,6 +508,8 @@
 
 .folder-window.is-open {
   position: absolute;
+
+  /* Keep the selected window immediately below the docked folder artwork. */
   z-index: 30;
   top: var(--open-window-center, 50%);
   left: 50%;
@@ -535,13 +539,21 @@
 
   .desktop-folder {
     width: min(580px, 96vw);
-    height: 520px;
+    height: 560px;
     margin-top: max(48px, calc(100svh - 680px));
   }
 
+  .desktop-folder:not(.is-docked) .folder-face {
+    top: auto;
+    bottom: 0;
+  }
+
   .folder-hint {
+    top: auto;
+    bottom: min(232px, 38.4vw);
     padding: 10px 14px;
     font-size: 9px;
+    transform: translate(-50%, 50%);
   }
 
   .boot-screen {
