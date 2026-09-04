@@ -5,9 +5,9 @@ import '../styles/SystemLog.css';
 
 const entries = [
   ['2023 → 2027', 'NUS / Bachelor of Computing in Computer Science', 'GPA 4.81 / 5.00 · Dean’s List · ASEAN Undergraduate Merit Scholarship'],
-  ['2026 → now', 'Singapore Power Group / Full-Stack Developer Intern', 'React, TypeScript, Django, Python, Go, Kafka, Kubernetes, LLM observability'],
+  ['2026', 'Singapore Power Group / Full-Stack Developer Intern', 'Go Microservices for IoT data ingestion. AI chatbot for telemetry and documentation.'],
   ['2024 → 2025', 'NUS / Teaching Assistant, Programming Methodology II', '10 weeks of Java labs for 25 CS undergraduates'],
-  ['2023 → now', 'RC4 / Finance Secretary + Creatives Director', 'Five-figure budget · team of 6 · community of 600 residents'],
+  ['2024', 'RC4 / Finance Secretary', 'Managed five-figure budget for community of 600 residents'],
 ];
 
 export default function SystemLog() {
