@@ -1,5 +1,6 @@
-import PixelIcon from './PixelIcon';
-import { skills } from '../data/portfolio';
+import { useEffect, useRef, useState } from 'react';
+import folderGraphic from '../assets/figma-folder.svg';
+import thought from '../data/thoughts.md?raw';
 import '../styles/SystemLog.css';
 
 const entries = [
@@ -10,14 +11,68 @@ const entries = [
 ];
 
 export default function SystemLog() {
+  const [thoughtOpen, setThoughtOpen] = useState(false);
+  const [thoughtPosition, setThoughtPosition] = useState(null);
+  const closeButtonRef = useRef(null);
+  const thoughtWindowRef = useRef(null);
+  const thoughtDragRef = useRef(null);
+
+  useEffect(() => {
+    if (!thoughtOpen) return undefined;
+
+    closeButtonRef.current?.focus();
+    const closeOnEscape = (event) => {
+      if (event.key === 'Escape') setThoughtOpen(false);
+    };
+
+    window.addEventListener('keydown', closeOnEscape);
+    return () => window.removeEventListener('keydown', closeOnEscape);
+  }, [thoughtOpen]);
+
+  const startThoughtDrag = (event) => {
+    if (event.button !== 0 || event.target.closest('button')) return;
+    const bounds = thoughtWindowRef.current.getBoundingClientRect();
+    thoughtDragRef.current = {
+      pointerId: event.pointerId,
+      pointerX: event.clientX,
+      pointerY: event.clientY,
+      startX: bounds.left,
+      startY: bounds.top,
+      width: bounds.width,
+      height: bounds.height,
+    };
+    event.currentTarget.setPointerCapture(event.pointerId);
+  };
+
+  const dragThought = (event) => {
+    const current = thoughtDragRef.current;
+    if (!current || current.pointerId !== event.pointerId) return;
+    setThoughtPosition({
+      x: Math.min(Math.max(0, current.startX + event.clientX - current.pointerX), Math.max(0, window.innerWidth - current.width)),
+      y: Math.min(Math.max(0, current.startY + event.clientY - current.pointerY), Math.max(0, window.innerHeight - current.height)),
+    });
+  };
+
+  const finishThoughtDrag = (event) => {
+    if (thoughtDragRef.current?.pointerId !== event.pointerId) return;
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
+    thoughtDragRef.current = null;
+  };
+
+  const cancelThoughtDrag = (event) => {
+    if (thoughtDragRef.current?.pointerId === event.pointerId) thoughtDragRef.current = null;
+  };
+
   return (
-    <section className="wrap" id="experience">
-      <div className="section-head" data-reveal><div><div className="section-kicker">system // person.log</div><h2>about.sys</h2></div><p className="section-intro">The resume facts are still there, but presented as a living system: education, work, leadership, and the tools I reach for most.</p></div>
-      <div className="split-grid">
-        <article className="retro-panel profile-panel" data-reveal><div className="panel-head"><span>person.log</span><span>status: curious</span></div><div className="panel-body"><h3>curiosity is a feature.</h3><p>I like going deep enough into a problem to understand what the computer is actually doing — then making the result easier for someone else to use.</p><div className="project-meta"><span className="tag">systems thinker</span><span className="tag">kind teammate</span><span className="tag">python enjoyer</span></div></div></article>
-        <article className="retro-panel terminal-log" data-reveal style={{ '--reveal-delay': '180ms' }}><div className="panel-head"><span>education_and_work.log</span><span>tail -f</span></div><div className="panel-body log-lines">{entries.map(([date, role, note]) => <div className="log-entry" key={role}><time>{date}</time><div><strong>{role}</strong><span>{note}</span></div></div>)}</div></article>
-      </div>
-      <div className="skills-panel" data-reveal><div className="panel-head"><span>skill_matrix.json</span><span>python-first environment</span></div><div className="skills-inner"><div className="primary-language"><div className="skill-card-icon"><PixelIcon kind="python" /></div><small>primary_language</small><h3>Python</h3><p>because readable code is a love language.</p></div><div className="skill-cloud">{skills.map(([skill, icon]) => <div className="tag" key={skill}><PixelIcon kind={icon} /><span>{skill}</span></div>)}</div></div></div>
-    </section>
+    <>
+      <section className="wrap" id="experience">
+        <div className="section-head" data-reveal><div className="terminal-section-heading"><div className="typed-kicker-shell about-kicker-shell"><div className="section-kicker typed-kicker about-kicker">system // person.log</div></div><h2 className="section-title-pill" data-reveal style={{ '--reveal-delay': '180ms' }}>about.sys</h2></div></div>
+        <div className="split-grid">
+          <article className="retro-panel profile-panel" data-reveal><div className="panel-head"><span>person.log</span><span>status: curious</span></div><div className="panel-body"><h3>view my thoughts</h3><button className="thought-folder" type="button" onClick={() => setThoughtOpen(true)} aria-haspopup="dialog"><img src={folderGraphic} alt="" aria-hidden="true" /><span>thoughts.md</span></button></div></article>
+          <article className="retro-panel terminal-log" data-reveal style={{ '--reveal-delay': '180ms' }}><div className="panel-head"><span>education_and_work.log</span><span>tail -f</span></div><div className="panel-body log-lines">{entries.map(([date, role, note]) => <div className="log-entry" key={role}><time>{date}</time><div><strong>{role}</strong><span>{note}</span></div></div>)}</div></article>
+        </div>
+      </section>
+      {thoughtOpen && <div ref={thoughtWindowRef} className={`thought-window ${thoughtPosition ? 'has-position' : ''}`} style={thoughtPosition ? { '--thought-window-x': `${thoughtPosition.x}px`, '--thought-window-y': `${thoughtPosition.y}px` } : undefined} role="dialog" aria-modal="false" aria-labelledby="thought-window-title"><div className="thought-window-shell"><div className="thought-window-head" onPointerDown={startThoughtDrag} onPointerMove={dragThought} onPointerUp={finishThoughtDrag} onPointerCancel={cancelThoughtDrag}><span id="thought-window-title">kelly@portfolio:~/data/thoughts.md</span><button ref={closeButtonRef} type="button" onClick={() => setThoughtOpen(false)} aria-label="Close thoughts window">×</button></div><pre className="thought-window-content">{thought}</pre></div></div>}
+    </>
   );
 }
