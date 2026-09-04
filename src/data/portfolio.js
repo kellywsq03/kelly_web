@@ -19,7 +19,7 @@ export const projects = [
     images: ['cerebro.png', 'cerebro_2.png'],
   },
   {
-    id: 'source academy', icon: 'code', stack: ['typescript'], title: 'Source academy',
+    id: 'sourceacademy', icon: 'code', stack: ['typescript'], title: 'Source academy',
     subtitle: 'open-source cs education platform',
     summary: 'extending Source Academy’s open-source in-browser Java interpreter with language features.',
   },
@@ -42,10 +42,9 @@ export const skills = [
 ];
 
 export const terminalCommands = {
-  help: 'available commands:\n  whoami              identity + current status\n  ls projects         list the project deck\n  cat education       print the education log\n  python              show the primary language\n  open <project>      open a project card\n  contact             jump to contact.exe\n  clear               clear the shell\n  exit                close the shell',
-  whoami: 'kelly_wsq03 — penultimate cs undergrad @ nus; aspiring swe; builds systems, interfaces, and small weird things.',
-  'ls projects': 'clockedit/\nsimfella/\npower-grid-copilot/\njava-slang/\nplanefella/\nrespondr/',
-  'cat education': 'NUS / Computer Science / GPA 4.81\nDean’s List + ASEAN Undergraduate Merit Scholarship\nSingapore Power Group / Full-Stack Developer Intern',
-  python: 'Python is the primary language. Also fluent in TypeScript, Java, Go, Swift, SQL, and HTML/CSS.',
-  contact: 'jumping to contact.exe — send the good stuff.',
+  help: 'available commands:\n  whoami              self-introduction\n  ls projects         list the project deck\n  cat education       print my education log\n  open <project>      open a project card\n  contact             jump to contact.exe\n  clear               clear the shell\n  exit                close the shell',
+  whoami: 'kelly wang — final year cs @ nus; aspiring swe; builds full-stack web apps, ai systems',
+  'ls projects': 'clockedit/\nsimfella/\ncerebro/\nsourceacademy/\nplanefella/\nrespondr/',
+  'cat education': 'NUS / Computer Science / GPA 4.81\nDean’s List + ASEAN Undergraduate Merit Scholarship',
+  contact: 'jumping to contact.exe; drop me a message!',
 };

@@ -1,22 +1,37 @@
 .terminal {
   position: fixed;
-  inset: 0;
+  right: 20px;
+  bottom: 20px;
   z-index: 40;
-  display: grid;
-  place-items: center;
-  padding: 22px;
-  background: rgba(0, 0, 0, 0.78);
+  pointer-events: none;
 }
 
 .terminal-window {
-  width: min(900px, 100%);
-  max-height: 88vh;
+  width: min(560px, calc(100vw - 40px), calc(100vh - 40px));
+  aspect-ratio: 1;
   display: flex;
   flex-direction: column;
   overflow: hidden;
   border: 2px solid var(--green);
+  border-radius: 18px;
   background: var(--black);
-  box-shadow: 12px 12px 0 var(--pink);
+  pointer-events: auto;
+}
+
+.terminal.is-open .terminal-window {
+  animation: terminal-pop-up 0.36s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.terminal.is-closed {
+  right: 0;
+  bottom: 0;
+}
+
+.terminal.is-closed .terminal-window {
+  width: min(430px, calc(100vw - 40px));
+  height: auto;
+  aspect-ratio: auto;
+  border-radius: 12px 0 0;
 }
 
 .terminal-head {
@@ -27,6 +42,52 @@
   border-bottom: 1px solid var(--line);
   color: var(--dim);
   font: 10px var(--mono);
+}
+
+.terminal-collapsed-bar {
+  display: flex;
+  align-items: stretch;
+}
+
+.terminal-reopen {
+  min-width: 0;
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 0;
+  padding: 13px 16px;
+  color: var(--dim);
+  background: transparent;
+  font: 10px var(--mono);
+  text-align: left;
+}
+
+.terminal-reopen:hover,
+.terminal-reopen:focus-visible {
+  color: var(--green);
+}
+
+.terminal-reopen span:last-child {
+  color: var(--pink);
+  font-size: 17px;
+  line-height: 0;
+}
+
+.terminal-dismiss {
+  width: 46px;
+  border: 0;
+  border-left: 1px solid var(--line);
+  padding: 0;
+  color: var(--pink);
+  background: transparent;
+  font: 22px var(--mono);
+}
+
+.terminal-dismiss:hover,
+.terminal-dismiss:focus-visible {
+  color: var(--black);
+  background: var(--pink);
 }
 
 .terminal-close {
@@ -75,4 +136,96 @@
   padding: 10px 0;
   background: transparent;
   box-shadow: none !important;
+  font: 12px var(--mono);
+}
+
+.terminal-input::placeholder {
+  font-family: var(--mono);
+}
+
+@keyframes terminal-pop-up {
+  from {
+    opacity: 0;
+    transform: translate(24px, 36px) scale(0.94);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (min-width: 641px) {
+  .terminal.is-open.has-position {
+    top: var(--terminal-y);
+    left: var(--terminal-x);
+    right: auto;
+    bottom: auto;
+  }
+
+  .terminal.is-open .terminal-head {
+    cursor: grab;
+    user-select: none;
+    touch-action: none;
+  }
+
+  .terminal.is-open .terminal-head:active {
+    cursor: grabbing;
+  }
+}
+
+@media (max-width: 640px) {
+  .terminal {
+    inset: 50% auto auto 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .terminal.is-closed {
+    display: none;
+  }
+
+  .terminal-window {
+    width: min(560px, calc(100vw - 32px), calc(100vh - 32px));
+    border-radius: 16px;
+    box-shadow: 8px 8px 0 var(--pink);
+  }
+
+  .terminal.is-open .terminal-window {
+    animation-name: terminal-pop-center;
+  }
+
+  .terminal-head {
+    gap: 12px;
+  }
+
+  .terminal-output {
+    min-height: 0;
+  }
+
+  .terminal-form {
+    flex-wrap: wrap;
+  }
+
+  .terminal-input {
+    min-width: 0;
+    flex: 1;
+  }
+}
+
+@keyframes terminal-pop-center {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.94);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .terminal.is-open .terminal-window {
+    animation: none;
+  }
 }
