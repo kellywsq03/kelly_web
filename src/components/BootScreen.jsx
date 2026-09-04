@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { skills } from '../data/portfolio';
 import folderGraphic from '../assets/figma-folder.svg';
+import resumePdf from '../assets/KellyWangSzeQing-Resume.pdf';
+import PixelIcon from './PixelIcon';
 import '../styles/BootScreen.css';
 
 const portrait = `
@@ -176,6 +178,7 @@ export default function BootScreen({ onOpenTerminal }) {
   const [dockedLayout, setDockedLayout] = useState(null);
   const [bootRun, setBootRun] = useState(0);
   const [skillsSorted, setSkillsSorted] = useState(false);
+  const [cvOpen, setCvOpen] = useState(false);
 
   useEffect(() => {
     setVisibleLineCount(0);
@@ -210,6 +213,20 @@ export default function BootScreen({ onOpenTerminal }) {
     if (openWindow === 'skills') setSkillsSorted(false);
   }, [openWindow]);
 
+  useEffect(() => {
+    if (!cvOpen) return undefined;
+    const previousOverflow = document.body.style.overflow;
+    const closeOnEscape = (event) => {
+      if (event.key === 'Escape') setCvOpen(false);
+    };
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', closeOnEscape);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener('keydown', closeOnEscape);
+    };
+  }, [cvOpen]);
+
   const placeDockedFolder = () => {
     const horizontalInset = window.innerWidth <= 840 ? 28 : 44;
     const folderWidth = Math.min(400, Math.max(0, window.innerWidth - horizontalInset));
@@ -243,6 +260,11 @@ export default function BootScreen({ onOpenTerminal }) {
       style={dockedLayout ? { '--docked-folder-top': `${dockedLayout.folderTop}px`, '--open-window-center': `${dockedLayout.windowCenter}px` } : undefined}
     >
       <p className="hero-title">kelly's space //</p>
+      <nav className="hero-links" aria-label="Kelly's profiles and CV">
+        <a className="hero-link" href="https://github.com/kellywsq03" target="_blank" rel="noreferrer" aria-label="Open Kelly's GitHub" title="GitHub"><PixelIcon kind="github" /></a>
+        <a className="hero-link" href="https://www.linkedin.com/in/kelly-wang-sq/" target="_blank" rel="noreferrer" aria-label="Open Kelly's LinkedIn" title="LinkedIn"><PixelIcon kind="linkedin" /></a>
+        <button className="hero-link" type="button" onClick={() => setCvOpen(true)} aria-label="Preview Kelly's CV" title="Preview CV"><PixelIcon kind="file" /></button>
+      </nav>
       <div
         className={`desktop-folder ${openWindow ? 'is-docked' : ''}`}
         aria-label="Welcome folder"
@@ -301,6 +323,15 @@ export default function BootScreen({ onOpenTerminal }) {
           </div>
         </article>
       </div>
+      {cvOpen && (
+        <div className="cv-modal" role="dialog" aria-modal="true" aria-labelledby="cv-title" onMouseDown={(event) => { if (event.target === event.currentTarget) setCvOpen(false); }}>
+          <div className="cv-window">
+            <div className="cv-window-bar"><span id="cv-title">kelly_wang_cv.pdf</span><button type="button" onClick={() => setCvOpen(false)} aria-label="Close CV preview">×</button></div>
+            <iframe className="cv-preview" src={`${resumePdf}#view=FitH`} title="Kelly Wang Sze Qing CV preview" />
+            <div className="cv-actions"><a className="button" href={resumePdf} download="KellyWangSzeQing-Resume.pdf"><PixelIcon kind="download" />download cv</a></div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }
