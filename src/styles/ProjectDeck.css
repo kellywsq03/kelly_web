@@ -364,7 +364,7 @@
 @media (max-width: 840px) {
   .projects-deck {
     min-height: 0;
-    padding: 20px 10px 22px;
+    padding: 20px 14px 22px;
   }
 
   .project-card,
@@ -377,9 +377,11 @@
     transform: none;
   }
 
+  .project-card:first-child { margin-left: 0; }
+
   .project-card.is-open {
-    flex-basis: 300px;
-    width: 300px;
+    flex-basis: min(300px, calc(100vw - 56px));
+    width: min(300px, calc(100vw - 56px));
     height: 100%;
   }
 
