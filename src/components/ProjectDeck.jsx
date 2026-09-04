@@ -41,7 +41,7 @@ export default function ProjectDeck({ openProject, onToggle }) {
 
   return (
     <section className="wrap" id="projects">
-      <div className="section-head" data-reveal data-reveal-once><div className="project-heading"><div className="project-kicker-shell"><div className="section-kicker project-kicker">projects // click a process</div></div><h2 className="project-title-button" data-reveal style={{ '--reveal-delay': '180ms' }}>projects.exe</h2></div></div>
+      <div className="section-head" data-reveal data-reveal-once><div className="terminal-section-heading"><div className="terminal-section-copy"><div className="typed-kicker-shell"><div className="section-kicker typed-kicker">projects // click a process</div></div><h2 className="section-terminal-title" data-reveal style={{ '--reveal-delay': '180ms' }}>projects.exe</h2></div><div className="section-heading-meta" aria-hidden="true"><span>01</span><small>processes // running</small></div></div></div>
       <div className={`projects-deck ${openProject ? 'has-open' : ''}`}>
         {projects.map((project, index) => (
           <article key={project.id} className={`project-card ${openProject === project.id ? 'is-open' : ''} ${revealedProjects.has(project.id) ? 'is-revealed' : ''}`} data-project-id={project.id} data-reveal style={{ '--reveal-delay': `${index * 180}ms` }} tabIndex="0" onClick={() => revealAndToggle(project.id)} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); revealAndToggle(project.id); } }}>
