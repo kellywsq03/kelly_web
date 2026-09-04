@@ -98,7 +98,7 @@ export default function Terminal({ isVisible, isOpen, onClose, onOpen, onDismiss
           <div className="terminal-head" onPointerDown={startDrag} onPointerMove={drag} onPointerUp={finishDrag} onPointerCancel={cancelDrag}><span id="terminal-title">kelly@portfolio:~</span><button className="terminal-close" type="button" onClick={onClose} aria-label="Close terminal">×</button></div>
           <div ref={outputRef} className="terminal-output">{lines.map((line, index) => <div className={`terminal-line ${line.kind}`} key={`${line.text}-${index}`}>{line.text}</div>)}</div>
           <form className="terminal-form" onSubmit={submit}><span>visitor@kelly.dev $</span><input ref={inputRef} className="terminal-input" value={input} onChange={(event) => setInput(event.target.value)} autoComplete="off" aria-label="Terminal command" placeholder="type help" /></form>
-        </> : <div className="terminal-collapsed-bar"><button className="terminal-reopen" type="button" onClick={onOpen} aria-label="Open interactive shell"><span>kelly@portfolio:~ // interactive shell</span><span aria-hidden="true">⌃</span></button><button className="terminal-dismiss" type="button" onClick={onDismiss} aria-label="Hide shell tab">×</button></div>}
+        </> : <div className="terminal-collapsed-bar"><button className="terminal-reopen" type="button" onClick={onOpen} aria-label="Open interactive shell"><span>kelly@portfolio:~</span><span aria-hidden="true">⌃</span></button><button className="terminal-dismiss" type="button" onClick={onDismiss} aria-label="Hide shell tab">×</button></div>}
       </div>
     </div>
   );
