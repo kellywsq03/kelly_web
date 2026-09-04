@@ -7,19 +7,19 @@ export const projects = [
     video: 'https://youtu.be/-jDvFhd6jbE'
   },
   {
-    id: 'simfella', icon: 'react', stack: ['react', 'go', 'websockets'], title: 'Simfella: collaborative systems dynamics',
+    id: 'simfella', icon: 'react', stack: ['react', 'go', 'websockets'], title: 'Simfella',
     subtitle: 'Systems dynamics modelling',
     summary: 'a real-time web app for building and debugging time-stepped simulations piloted with 600 NUS Residential College 4 residents.',
     images: ['simfella.png'],
   },
   {
-    id: 'cerebro', icon: 'database', stack: ['python', 'react', 'django', 'langgraph'], title: 'Power grid copilot',
+    id: 'cerebro', icon: 'database', stack: ['python', 'react', 'django', 'langgraph'], title: 'Cerebro',
     subtitle: 'semantic layer for telemetry',
     summary: 'AI chatbot for power grid operators to query telemetry and documentation with natural language, built during my Singapore Power Group internship.',
     images: ['cerebro.png', 'cerebro_2.png'],
   },
   {
-    id: 'source academy', icon: 'code', stack: ['typescript'], title: 'Extending java-slang',
+    id: 'source academy', icon: 'code', stack: ['typescript'], title: 'Source academy',
     subtitle: 'open-source cs education platform',
     summary: 'extending Source Academy’s open-source in-browser Java interpreter with language features.',
   },

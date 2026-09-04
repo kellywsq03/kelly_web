@@ -41,7 +41,7 @@ export default function ProjectDeck({ openProject, onToggle }) {
 
   return (
     <section className="wrap" id="projects">
-      <div className="section-head" data-reveal data-reveal-once><div><div className="section-kicker">projects // click a process</div><h2>projects.exe</h2></div></div>
+      <div className="section-head" data-reveal data-reveal-once><div className="project-heading"><div className="project-kicker-shell"><div className="section-kicker project-kicker">projects // click a process</div></div><h2 className="project-title-button" data-reveal style={{ '--reveal-delay': '180ms' }}><PixelIcon kind="file" />projects.exe</h2></div></div>
       <div className={`projects-deck ${openProject ? 'has-open' : ''}`}>
         {projects.map((project, index) => (
           <article key={project.id} className={`project-card ${openProject === project.id ? 'is-open' : ''} ${revealedProjects.has(project.id) ? 'is-revealed' : ''}`} data-project-id={project.id} data-reveal style={{ '--reveal-delay': `${index * 180}ms` }} tabIndex="0" onClick={() => revealAndToggle(project.id)} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); revealAndToggle(project.id); } }}>
@@ -71,7 +71,7 @@ export default function ProjectDeck({ openProject, onToggle }) {
           </article>
         ))}
       </div>
-      <p className="deck-note" data-reveal>tip: if this were a real terminal, I’d run <span>cat project/*.md</span> next.</p>
+      <p className="deck-note" data-reveal>tip: i'd open a shell <span>⌘K</span> and run <span>open {"<project>"}</span> instead!</p>
     </section>
   );
 }
