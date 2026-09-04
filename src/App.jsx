@@ -13,6 +13,9 @@ const posts = [
   ['2025.12.08', 'Three tiny details that made a side project feel finished', '3 min / craft'],
 ];
 
+const contactEnabled = (import.meta.env.VITE_CONTACT_ENABLED ?? 'true').toLowerCase() !== 'false';
+const thoughtsEnabled = (import.meta.env.VITE_THOUGHTS_ENABLED ?? 'false').toLowerCase() === 'true';
+
 const readShellPreference = (key) => {
   try {
     return window.localStorage.getItem(key) === 'true';
@@ -104,7 +107,7 @@ export default function App() {
     };
   }, []);
 
-  const stageMessage = () => {
+  const showMessageSent = () => {
     setToast(true);
     window.setTimeout(() => setToast(false), 4500);
   };
@@ -114,11 +117,11 @@ export default function App() {
       <BootScreen onOpenTerminal={discoverTerminal} />
       <ProjectDeck openProject={openProject} onToggle={toggleProject} />
       <SystemLog />
-      <section className="wrap" id="writing"><div className="section-head" data-reveal><div><div className="section-kicker">writing // build logs</div><h2>thoughts.md</h2></div><p className="section-intro">Short notes about the engineering decisions, debugging stories, and small details that do not fit inside a project bullet point.</p></div><div className="writing-grid">{posts.map(([date, title, meta], index) => <a className="post" href="#contact" key={title} data-reveal style={{ '--reveal-delay': `${index * 180}ms` }}><span className="post-date">{date}</span><h3>{title}</h3><span className="post-meta">{meta}</span></a>)}</div></section>
-      <ContactExe onSubmit={stageMessage} />
+      {thoughtsEnabled && <section className="wrap" id="writing"><div className="section-head" data-reveal><div><div className="section-kicker">writing // build logs</div><h2>thoughts.md</h2></div><p className="section-intro">Short notes about the engineering decisions, debugging stories, and small details that do not fit inside a project bullet point.</p></div><div className="writing-grid">{posts.map(([date, title, meta], index) => <a className="post" href={contactEnabled ? '#contact' : undefined} aria-disabled={contactEnabled ? undefined : 'true'} key={title} data-reveal style={{ '--reveal-delay': `${index * 180}ms` }}><span className="post-date">{date}</span><h3>{title}</h3><span className="post-meta">{meta}</span></a>)}</div></section>}
+      {contactEnabled && <ContactExe onSuccess={showMessageSent} />}
     </main>
     <footer className="wrap" data-reveal><span>© 2026 Kelly Wang Sze Qing // built with curiosity</span><span><a href="https://github.com/kellywsq03" target="_blank" rel="noreferrer">github ↗</a> · <a href="https://www.linkedin.com/in/kelly-wang-sq/" target="_blank" rel="noreferrer">linkedin ↗</a></span><span><a href="#top">reboot ↑</a></span></footer>
-    <Terminal isVisible={terminalOpen || (terminalDiscovered && !terminalTabDismissed)} isOpen={terminalOpen} onClose={() => setTerminalOpen(false)} onOpen={() => setTerminalOpen(true)} onDismiss={dismissTerminalTab} onOpenProject={setOpenProject} />
-    <div className={`toast ${toast ? 'is-visible' : ''}`} role="status" aria-live="polite">Message staged. Connect your email endpoint to send it for real.</div>
+    <Terminal isVisible={terminalOpen || (terminalDiscovered && !terminalTabDismissed)} isOpen={terminalOpen} onClose={() => setTerminalOpen(false)} onOpen={() => setTerminalOpen(true)} onDismiss={dismissTerminalTab} onOpenProject={setOpenProject} contactEnabled={contactEnabled} />
+    <div className={`toast ${toast ? 'is-visible' : ''}`} role="status" aria-live="polite">Message sent. I’ll get back to you soon.</div>
   </>;
 }

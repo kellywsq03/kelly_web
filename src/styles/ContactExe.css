@@ -71,6 +71,25 @@ textarea {
   resize: vertical;
 }
 
+.contact-form .button:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+.contact-honeypot {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.form-error {
+  margin: 6px 0 0;
+  color: var(--pink);
+  font: 10px/1.5 var(--mono);
+}
+
 .form-note {
   margin: 14px 0 0;
   color: var(--dim);

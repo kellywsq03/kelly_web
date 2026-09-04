@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { terminalCommands } from '../data/portfolio';
 import '../styles/Terminal.css';
 
-export default function Terminal({ isVisible, isOpen, onClose, onOpen, onDismiss, onOpenProject }) {
+export default function Terminal({ isVisible, isOpen, onClose, onOpen, onDismiss, onOpenProject, contactEnabled }) {
   const inputRef = useRef(null);
   const outputRef = useRef(null);
   const initializedRef = useRef(false);
@@ -40,6 +40,8 @@ export default function Terminal({ isVisible, isOpen, onClose, onOpen, onDismiss
       const found = ['clockedit', 'simfella', 'cerebro', 'sourceacademy', 'planefella', 'respondr'].includes(id);
       next.push({ text: found ? `Opening ${id} in the project deck.` : 'project not found. Try “open clockedit”.', kind: 'output' });
       if (found) { onOpenProject(id); document.querySelector('#projects')?.scrollIntoView({ behavior: 'smooth' }); }
+    } else if (normalized === 'contact' && !contactEnabled) {
+      next.push({ text: 'contact.exe is currently offline.', kind: 'output' });
     } else if (terminalCommands[normalized] !== undefined) {
       next.push({ text: terminalCommands[normalized], kind: 'output' });
       if (normalized === 'contact') document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' });
