@@ -65,13 +65,20 @@ footer a:hover {
   background: var(--green);
   box-shadow: 5px 5px 0 var(--pink);
   font: 11px/1.45 var(--mono);
-  transform: translateY(120px);
-  transition: transform 0.25s;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px);
+  transition: opacity 0.25s, transform 0.25s, visibility 0s linear 0.25s;
+  pointer-events: none;
 }
 
 .toast.is-visible {
+  opacity: 1;
+  visibility: visible;
   transform: none;
+  transition-delay: 0s;
 }
+
 @media (max-width: 840px) {
   .post {
     grid-template-columns: 1fr auto;
