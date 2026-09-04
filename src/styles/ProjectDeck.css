@@ -13,12 +13,6 @@
   margin-bottom: clamp(14px, 3vh, 32px);
 }
 
-.section-title-pill .pixel-icon {
-  width: 30px;
-  height: 30px;
-  color: var(--green);
-}
-
 .projects-deck {
   position: relative;
   display: flex;

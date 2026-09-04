@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import folderGraphic from '../assets/figma-folder.svg';
-import thought from '../data/thoughts.md?raw';
+import aiCodingThought from '../data/ai_doom.md?raw';
+import teamworkThought from '../data/teamwork.md?raw';
 import '../styles/SystemLog.css';
 
 const entries = [
@@ -10,24 +11,29 @@ const entries = [
   ['2024', 'RC4 / Finance Secretary', 'Managed five-figure budget for community of 600 residents'],
 ];
 
+const thoughts = [
+  { fileName: 'ai_doom.md', content: aiCodingThought },
+  { fileName: 'teamwork.md', content: teamworkThought },
+];
+
 export default function SystemLog() {
-  const [thoughtOpen, setThoughtOpen] = useState(false);
+  const [openThought, setOpenThought] = useState(null);
   const [thoughtPosition, setThoughtPosition] = useState(null);
   const closeButtonRef = useRef(null);
   const thoughtWindowRef = useRef(null);
   const thoughtDragRef = useRef(null);
 
   useEffect(() => {
-    if (!thoughtOpen) return undefined;
+    if (!openThought) return undefined;
 
     closeButtonRef.current?.focus();
     const closeOnEscape = (event) => {
-      if (event.key === 'Escape') setThoughtOpen(false);
+      if (event.key === 'Escape') setOpenThought(null);
     };
 
     window.addEventListener('keydown', closeOnEscape);
     return () => window.removeEventListener('keydown', closeOnEscape);
-  }, [thoughtOpen]);
+  }, [openThought]);
 
   const startThoughtDrag = (event) => {
     if (event.button !== 0 || event.target.closest('button')) return;
@@ -66,13 +72,13 @@ export default function SystemLog() {
   return (
     <>
       <section className="wrap" id="experience">
-        <div className="section-head" data-reveal><div className="terminal-section-heading"><div className="typed-kicker-shell about-kicker-shell"><div className="section-kicker typed-kicker about-kicker">system // person.log</div></div><h2 className="section-title-pill" data-reveal style={{ '--reveal-delay': '180ms' }}>about.sys</h2></div></div>
+        <div className="section-head" data-reveal><div className="terminal-section-heading"><div className="terminal-section-copy"><div className="typed-kicker-shell about-kicker-shell"><div className="section-kicker typed-kicker about-kicker">system // person.log</div></div><h2 className="section-terminal-title" data-reveal style={{ '--reveal-delay': '180ms' }}>about.sys</h2></div><div className="section-heading-meta" aria-hidden="true"><span>02</span><small>identity // loaded</small></div></div></div>
         <div className="split-grid">
-          <article className="retro-panel profile-panel" data-reveal><div className="panel-head"><span>person.log</span><span>status: curious</span></div><div className="panel-body"><h3>view my thoughts</h3><button className="thought-folder" type="button" onClick={() => setThoughtOpen(true)} aria-haspopup="dialog"><img src={folderGraphic} alt="" aria-hidden="true" /><span>thoughts.md</span></button></div></article>
+          <article className="retro-panel profile-panel" data-reveal><div className="panel-head"><span>person.log</span><span>status: curious</span></div><div className="panel-body"><h3>view my thoughts</h3><div className="thought-files">{thoughts.map((thoughtFile) => <button className="thought-folder" type="button" onClick={() => setOpenThought(thoughtFile)} aria-haspopup="dialog" key={thoughtFile.fileName}><img src={folderGraphic} alt="" aria-hidden="true" /><span>{thoughtFile.fileName}</span></button>)}</div></div></article>
           <article className="retro-panel terminal-log" data-reveal style={{ '--reveal-delay': '180ms' }}><div className="panel-head"><span>education_and_work.log</span><span>tail -f</span></div><div className="panel-body log-lines">{entries.map(([date, role, note]) => <div className="log-entry" key={role}><time>{date}</time><div><strong>{role}</strong><span>{note}</span></div></div>)}</div></article>
         </div>
       </section>
-      {thoughtOpen && <div ref={thoughtWindowRef} className={`thought-window ${thoughtPosition ? 'has-position' : ''}`} style={thoughtPosition ? { '--thought-window-x': `${thoughtPosition.x}px`, '--thought-window-y': `${thoughtPosition.y}px` } : undefined} role="dialog" aria-modal="false" aria-labelledby="thought-window-title"><div className="thought-window-shell"><div className="thought-window-head" onPointerDown={startThoughtDrag} onPointerMove={dragThought} onPointerUp={finishThoughtDrag} onPointerCancel={cancelThoughtDrag}><span id="thought-window-title">kelly@portfolio:~/data/thoughts.md</span><button ref={closeButtonRef} type="button" onClick={() => setThoughtOpen(false)} aria-label="Close thoughts window">×</button></div><pre className="thought-window-content">{thought}</pre></div></div>}
+      {openThought && <div ref={thoughtWindowRef} className={`thought-window ${thoughtPosition ? 'has-position' : ''}`} style={thoughtPosition ? { '--thought-window-x': `${thoughtPosition.x}px`, '--thought-window-y': `${thoughtPosition.y}px` } : undefined} role="dialog" aria-modal="false" aria-labelledby="thought-window-title"><div className="thought-window-shell"><div className="thought-window-head" onPointerDown={startThoughtDrag} onPointerMove={dragThought} onPointerUp={finishThoughtDrag} onPointerCancel={cancelThoughtDrag}><span id="thought-window-title">kelly@portfolio:~/data/{openThought.fileName}</span><button ref={closeButtonRef} type="button" onClick={() => setOpenThought(null)} aria-label="Close thoughts window">×</button></div><pre className="thought-window-content">{openThought.content}</pre></div></div>}
     </>
   );
 }
