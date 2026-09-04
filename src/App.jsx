@@ -81,7 +81,7 @@ export default function App() {
       <ContactExe onSubmit={stageMessage} />
     </main>
     <footer className="wrap" data-reveal><span>© 2026 Kelly Wang Sze Qing // built with curiosity</span><span><a href="https://github.com/kellywsq03" target="_blank" rel="noreferrer">github ↗</a> · <a href="https://www.linkedin.com/in/kelly-wang-sq/" target="_blank" rel="noreferrer">linkedin ↗</a></span><span><a href="#top">reboot ↑</a></span></footer>
-    <Terminal isOpen={terminalOpen} onClose={() => setTerminalOpen(false)} onOpenProject={setOpenProject} />
+    <Terminal isOpen={terminalOpen} onClose={() => setTerminalOpen(false)} onOpen={() => setTerminalOpen(true)} onOpenProject={setOpenProject} />
     <div className={`toast ${toast ? 'is-visible' : ''}`} role="status" aria-live="polite">Message staged. Connect your email endpoint to send it for real.</div>
   </>;
 }
