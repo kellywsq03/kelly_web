@@ -50,7 +50,11 @@ export default function App() {
           entry.target.classList.toggle('reveal-from-above', scrollDirection === 'up');
           entry.target.classList.add('is-revealed');
         } else {
-          entry.target.classList.remove('is-revealed');
+          const { top, bottom } = entry.boundingClientRect;
+          const isOutsideViewportVertically = bottom <= 0 || top >= window.innerHeight;
+          if (isOutsideViewportVertically && !entry.target.hasAttribute('data-reveal-once')) {
+            entry.target.classList.remove('is-revealed');
+          }
         }
       });
     }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });

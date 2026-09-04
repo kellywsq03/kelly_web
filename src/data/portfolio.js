@@ -2,30 +2,36 @@ export const projects = [
   {
     id: 'clockedit', icon: 'network', stack: ['typescript', 'fastify', 'react'],
     title: 'ClockedIt',
+    subtitle: 'Agent coordination middleware',
     summary: 'middleware for coordinating coding agents and eliminating stale-read conflicts that git cannot detect.',
     video: 'https://youtu.be/-jDvFhd6jbE'
   },
   {
     id: 'simfella', icon: 'react', stack: ['react', 'go', 'websockets'], title: 'Simfella: collaborative systems dynamics',
+    subtitle: 'Systems dynamics modelling',
     summary: 'a real-time web app for building and debugging time-stepped simulations piloted with 600 NUS Residential College 4 residents.',
     images: ['simfella.png'],
   },
   {
-    id: 'power-grid-copilot', icon: 'database', stack: ['python', 'react', 'django', 'langgraph'], title: 'Power grid copilot',
+    id: 'cerebro', icon: 'database', stack: ['python', 'react', 'django', 'langgraph'], title: 'Power grid copilot',
+    subtitle: 'semantic layer for telemetry',
     summary: 'AI chatbot for power grid operators to query telemetry and documentation with natural language, built during my Singapore Power Group internship.',
     images: ['cerebro.png', 'cerebro_2.png'],
   },
   {
-    id: 'java-slang', icon: 'code', stack: ['typescript'], title: 'Extending java-slang',
+    id: 'source academy', icon: 'code', stack: ['typescript'], title: 'Extending java-slang',
+    subtitle: 'open-source cs education platform',
     summary: 'extending Source Academy’s open-source in-browser Java interpreter with language features.',
   },
   {
     id: 'planefella', icon: 'travel', stack: ['python', 'flask', 'react'], title: 'PlaneFella',
+    subtitle: 'AI-powered itinerary builder',
     summary: 'an AI-assisted travel itinerary platform combining web scraping, video transcription, and itinerary building.',
     images: ['planefella.png'], video: 'https://youtu.be/iG4sZG4R9oI'
   },
   {
     id: 'respondr', icon: 'spatial', stack: ['swift', 'realitykit'], title: 'RespondR',
+    subtitle: 'spatial emergency response',
     summary: 'an Apple Vision Pro and companion iPhone app combining LiDAR room scanning with a real-time fire outbreak simulation.', 
     images: ['respondr.png', 'respondr_2.png'], video: 'https://youtu.be/tbyR_Sqt9jw'
   },

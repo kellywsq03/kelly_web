@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import PixelIcon from './PixelIcon';
 import { projects } from '../data/portfolio';
 import '../styles/ProjectDeck.css';
@@ -16,15 +17,38 @@ const getProjectImage = (fileName) => {
 const getYouTubeId = (url) => url?.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([^?&/]+)/)?.[1];
 
 export default function ProjectDeck({ openProject, onToggle }) {
+  const [revealedProjects, setRevealedProjects] = useState(() => new Set());
+
+  const revealAndToggle = (projectId) => {
+    setRevealedProjects((current) => {
+      if (current.has(projectId)) return current;
+      const next = new Set(current);
+      next.add(projectId);
+      return next;
+    });
+    onToggle(projectId);
+  };
+
+  useEffect(() => {
+    if (!openProject) return;
+    const selectedCard = document.querySelector(`[data-project-id="${openProject}"]`);
+    if (!selectedCard) return;
+    const deck = selectedCard.closest('.projects-deck');
+    if (!deck) return;
+    const targetLeft = selectedCard.offsetLeft - (deck.clientWidth - selectedCard.offsetWidth) / 2;
+    deck.scrollTo({ left: targetLeft, behavior: 'auto' });
+  }, [openProject]);
+
   return (
     <section className="wrap" id="projects">
-      <div className="section-head" data-reveal><div><div className="section-kicker">projects // click a process</div><h2>projects.exe</h2></div></div>
+      <div className="section-head" data-reveal data-reveal-once><div><div className="section-kicker">projects // click a process</div><h2>projects.exe</h2></div></div>
       <div className={`projects-deck ${openProject ? 'has-open' : ''}`}>
         {projects.map((project, index) => (
-          <article key={project.id} className={`project-card ${openProject === project.id ? 'is-open' : ''}`} data-reveal style={{ '--reveal-delay': `${index * 180}ms` }} tabIndex="0" onClick={() => onToggle(project.id)} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); onToggle(project.id); } }}>
+          <article key={project.id} className={`project-card ${openProject === project.id ? 'is-open' : ''} ${revealedProjects.has(project.id) ? 'is-revealed' : ''}`} data-project-id={project.id} data-reveal style={{ '--reveal-delay': `${index * 180}ms` }} tabIndex="0" onClick={() => revealAndToggle(project.id)} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); revealAndToggle(project.id); } }}>
             <div className="project-top"><span className="project-icon"><PixelIcon kind={project.icon} /></span><span></span></div>
             <h3>{project.title}</h3>
-            <p>{project.summary}</p>
+            <p className="project-subtitle">{project.subtitle}</p>
+            <p className="project-summary">{project.summary}</p>
             <div className="project-meta">{project.stack.map((tag) => <span className="tag" key={tag}>{tag}</span>)}</div><span className="project-hint">[ click to inspect ]</span>
             {(project.images?.length || project.video) && (
               <div className="project-details">
